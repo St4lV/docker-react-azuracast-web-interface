@@ -4,13 +4,13 @@ This project is a React Web Interface running on NodeJS meant to use Azuracast s
 
 ## Running
 This project is meant to be run with docker using 2 containers :
-- Azuracast container
-  Check out this page of documentation : https://www.azuracast.com/docs/getting-started/installation/docker/
+- **Azuracast container :**
+  - Check out this page of documentation : https://www.azuracast.com/docs/getting-started/installation/docker/
 
-- Node JS container
-  Check out this page of documentation : https://hub.docker.com/_/node/
-  React will run with NodeJS inside container no need to install more in order to make this work.
-  Refer **update-script.sh** for commands used.
+- **Node JS container :**
+  - Check out this page of documentation : https://hub.docker.com/_/node/
+  - React will run with NodeJS inside container no need to install more in order to make this work.
+  - Refer "*update-script.sh*" file for commands used.
 ---
 ## Progression:
  * [x] Display playlist, artist and name of actual playing song.
