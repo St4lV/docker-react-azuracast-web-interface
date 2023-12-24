@@ -11,8 +11,11 @@ COPY . /tirnatek-radio/
 RUN npm install
 RUN npm run build
 
+# Installer serve pour servir les fichiers statiques
+RUN npm install -g serve
+
 # Définir la variable d'environnement pour le port
 ENV PORT=3000
 
-# Commande pour exécuter l'application (changez "start" par la commande de démarrage de votre application React)
-CMD ["npm", "start"]
+# Commande pour exécuter l'application React construite avec serve
+CMD ["serve", "-s", "build"]
