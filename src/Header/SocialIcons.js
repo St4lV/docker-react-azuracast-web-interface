@@ -10,13 +10,13 @@ function SocialIcons() {
         </div>
       </a>
       
-      <a href="https://instagram.com/tirnatek" className="liendiscord" target="_blank">
+      <a href="https://discord.gg/GJgnaYJ8jQ" className="liendiscord" target="_blank">
         <div className="apb-discord">
           <FontAwesomeIcon icon={faDiscord} />
         </div>
       </a>
       
-      <a href="https://github.com/St4lV/St4lV.github.io" className="liengithub" target="_blank">
+      <a href="https://github.com/St4lV/docker-react-azuracast-web-interface" className="liengithub" target="_blank">
         <div className="apb-github">
           <FontAwesomeIcon icon={faGithub} />
         </div>
