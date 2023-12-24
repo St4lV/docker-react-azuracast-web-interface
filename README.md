@@ -25,7 +25,7 @@ This project is meant to be run with docker using 2 containers :
  * [ ] Switch language on main page (French, English)
  * [ ] Rate song popularity (upvote or downvote when song is playing)
 ---
-# This is the 2nd verion and a major upgrade a previous project.
+### This is the 2nd verion and a major upgrade of a previous project.
 
 Old version : https://github.com/St4lV/St4lV.github.io
 
