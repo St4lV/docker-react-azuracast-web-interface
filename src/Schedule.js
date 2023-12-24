@@ -12,7 +12,7 @@ const Schedule = () => {
         const scheduleRows = gp.map((playlist, index) => {
           const startDate = new Date(playlist.start);
           const formattedTime = isNaN(startDate)
-            ? new Date(playlist.start.replace(/[\sT\+]/g, ' ')).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })
+            ? new Date(playlist.start.replace(/[\sT+]/g, ' ')).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })
             : startDate.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
 
           return (
@@ -34,10 +34,10 @@ const Schedule = () => {
 
   return (
     <table id="scheduleTable">
-    <caption>
-    <h1>Planning de diffusion</h1>
-    <h2>(Effectif jusqu'au lendemain, minuit.)</h2>
-    </caption>
+      <caption>
+        <h1>Planning de diffusion</h1>
+        <h2>(Effectif jusqu'au lendemain, minuit.)</h2>
+      </caption>
       <thead>
         <tr>
           <th>Playlist</th>

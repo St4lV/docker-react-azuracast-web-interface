@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const MetadataGet = () => {
   const [metadata, setMetadata] = useState({
@@ -6,7 +6,7 @@ const MetadataGet = () => {
     title: '',
     elapsedValue: 0,
     elapsedUpdate: 0,
-    duration: 1, // Evite une division par zéro si la durée est 0
+    duration: 1,
     songId: '',
     songImg: '',
     isLive: false,
@@ -16,7 +16,7 @@ const MetadataGet = () => {
 
   const [hasPlaylist, setHasPlaylist] = useState(false);
 
-  const updateMusicInfo = (artist, title, elapsedValue, duration, songId, songImg) => {
+  const updateMusicInfo = useCallback((artist, title, elapsedValue, duration, songId, songImg) => {
     setMetadata(prevMetadata => ({
       ...prevMetadata,
       artist,
@@ -27,9 +27,9 @@ const MetadataGet = () => {
       songId,
       songImg
     }));
-  };
+  }, []);
 
-  const fetchData = () => {
+  const fetchData = useCallback(() => {
     fetch('https://tirnatek.fr/api/nowplaying_static/tntr.json')
       .then(response => {
         if (!response.ok) {
@@ -64,11 +64,14 @@ const MetadataGet = () => {
         console.error(`Failed to fetch data. Retrying in 30 seconds... Error: ${error.message}`);
         setTimeout(fetchData, 30000);
       });
-  };
+  }, [updateMusicInfo]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchDataWrapper = () => {
+      fetchData();
+    };
+    fetchDataWrapper();
+  }, [fetchData]); 
 
   useEffect(() => {
     setHasPlaylist(metadata.playlist !== '');
@@ -91,10 +94,10 @@ const MetadataGet = () => {
     <div>
       {hasPlaylist && <div id="playlist">{metadata.playlist}</div>}
       <div>
-      <div className='metadata'>
-        <h3>{metadata.title} </h3>
-        <h3> {metadata.artist}</h3>
-        <p>{formatTime(metadata.elapsedUpdate)} / {formatTime(metadata.duration)}</p>
+        <div className='metadata'>
+          <h3>{metadata.title} </h3>
+          <h3> {metadata.artist}</h3>
+          <p>{formatTime(metadata.elapsedUpdate)} / {formatTime(metadata.duration)}</p>
         </div>
         <div className="custom-progress">
           <div id="progress-bar" style={{ width: `${progress}%` }}></div>
