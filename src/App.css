@@ -1,3 +1,6 @@
+.mobile-body {
+  display: none;
+}
 body {
   display: flex;
   height: 100%;
@@ -22,24 +25,24 @@ header {
   font-size: 1em;
   height: 150px;
 }
-#social-icons{
+.social-icons{
   display: flex;
   position: fixed;
   margin-left: 5%;
   top: 35px;
   gap: 3em;
 }
-.apb-insta{
+.apb_insta{
   font-size: 3em;
   color: white;
 }
-.apb-discord{
+.apb_discord{
   font-size: 2.7em;
   color: white;
   position: relative;
   top: 5%;
 }
-.apb-github{
+.apb_github{
   font-size: 2.9em;
   color: white;
   position: relative;
