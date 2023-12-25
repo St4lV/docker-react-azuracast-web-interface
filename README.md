@@ -1,4 +1,4 @@
-### Tirnatek Radio Web Interface
+# Tirnatek Radio Web Interface
 
 This project is a React Web Interface running on NodeJS meant to use Azuracast service and API.
 
