@@ -20,7 +20,7 @@ This project is meant to be run with docker using 2 containers :
  * [x] Images buttons with link to social medias related with project
  * [x] Custom audio player 
  * [x] Album/song cover integration
- * [ ] Mobile page (currently working on)
+ * [x] Mobile page (95% only design tweaks left)
  * [ ] EQ Visualiser
  * [ ] Switch language on main page (French, English)
  * [ ] Rate song popularity (upvote or downvote when song is playing)
