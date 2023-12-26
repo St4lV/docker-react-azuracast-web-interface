@@ -10,7 +10,7 @@ This project is meant to be run with docker using 2 containers :
 - **Node JS container :**
   - Check out this page of documentation : https://hub.docker.com/_/node/
   - React will run with NodeJS inside container no need to install more in order to make this work.
-  - Refer "*update-script.sh*" file for commands used.
+  - Refer "*update-script.sh*" file for commands used to update files used the in docker container.
 ---
 ## Progression:
  * [x] Display playlist, artist and name of actual playing song.
