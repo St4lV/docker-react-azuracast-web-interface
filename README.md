@@ -1,4 +1,4 @@
-# Azuracast (Tirnatek Radio) Web interface with Docker, NodeJS & React
+# Azuracast Web interface using Docker, NodeJS & React (Tirnatek Radio)
 
 This project is a React Web Interface running on NodeJS meant to use Azuracast service and API.
 
