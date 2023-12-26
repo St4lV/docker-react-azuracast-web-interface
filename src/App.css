@@ -1,19 +1,21 @@
-.mobile-body {
+/*.body-mobile {
   display: none;
-}
-body {
-  display: flex;
-  height: 100%;
-  justify-content: center;
+}*/
+body{
+  background: url('psdream.jpg') center/cover;
+  min-height: 100vh;
   font-family: 'Orbitron', sans-serif;
   background-color: rgb(0, 0, 0);
   color: white; 
   margin: 0;
   padding: 0; 
-  background: url('psdream.jpg') center/cover;
-  min-height: 100vh;
 }
-header {
+.body, .body-mobile {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+.header {
   text-align: center;
   position: fixed;
   top: 0;  
@@ -25,30 +27,100 @@ header {
   font-size: 1em;
   height: 150px;
 }
+.header-mobile{
+  text-align: center;
+  position: fixed;
+  top: 0;  
+  left: 0;
+  width: 100%; 
+  background-color: #000000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  z-index: 1000; 
+  font-size: 1em;
+  height: 100px;
+}
+.title-header-mobile{
+  font-size: 0.8em;
+}
+.time-display-mobile{
+  display: none;
+}
 .social-icons{
+  font-size: 1.5em;
+  width: 100%;
+  height: 250px;
+  margin-top: 150px;
+  background-image: linear-gradient(to bottom, #000000, #0000009f);
+  z-index: 0;
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
+}
+
+.social-icons-mobile{
+  
+  width: 100%;
+  height: 200px;
+  margin-top: 100px;
+  background-image: linear-gradient(to bottom, #000000, #0000009f);
+  z-index: 0;
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center; 
+}
+.dropdown-content{
+  width: 100%;
+  transition: all 5s ease-in-out; 
+}
+.icons-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  text-align: center;
+  gap:20%;
+  justify-content: center;
+  z-index: 1;
+}
+
+.apb-barres{
+  font-size: 4em;
+  color: white;
   display: flex;
   position: fixed;
   margin-left: 5%;
   top: 35px;
   gap: 3em;
 }
-.apb_insta{
+.apb-barres-mobile{
+  font-size: 2em;
+  color: white;
+  display: flex;
+  position: fixed;
+  margin-left: 5%;
+  top: 35px;
+  gap: 3em;
+}
+.apb-insta{
   font-size: 3em;
   color: white;
 }
-.apb_discord{
+.apb-discord{
   font-size: 2.7em;
   color: white;
   position: relative;
   top: 5%;
 }
-.apb_github{
+.apb-github{
   font-size: 2.9em;
   color: white;
   position: relative;
   top: 2.5%;
 }
-footer{
+.footer{
   position: fixed;
   bottom: 0;
   left: 0;
@@ -59,11 +131,37 @@ footer{
   display: grid;
   height: 150px;
 }
+.footer-mobile{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; 
+  background-color: #000000; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  z-index: 1000; 
+  display: grid;
+  height: 100px;
+}
 .metadata{
   position: fixed;
   text-align: left;
   left: 200px;
   bottom: 10px;
+  width: 25%; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.metadata-mobile{
+  position: fixed;
+  text-align: left;
+  left: 20%;
+  bottom: 10px;
+  font-size: 0.65em;
+  width: 50%; 
+  white-space: nowrap;
+  overflow: scroll ;
+  text-overflow: ellipsis;
 }
 #lecteurAudio{
   display: none;
@@ -86,77 +184,157 @@ footer{
   width: 0; 
   transition: width 0.5s ease-in-out; 
 }
-
+.custom-progress-mobile {
+  width: 100%; 
+  height: 5px; 
+  background-color: #f0f0f0; 
+  border-radius: 4px; 
+  overflow: hidden; 
+  position: fixed;
+  text-align: center;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 #cover-np-song{
   border: 10px;
   position: fixed;
   text-align: left;
   left: 1px;
-  bottom: 1px;
+  bottom: -10px;
   width: 125px;
   padding: 20px;
   height: auto;
+  border-radius: 15%;
 }
-#playlist {
+#cover-np-song-mobile{
+  border: 10px;
+  position: fixed;
+  text-align: left;
+  right: 1px;
+  bottom: 12px;
+  width: 75px;
+  padding: 5px;
+  height: auto;
+  border-radius: 10%;
+}
+.playlist {
   position: fixed;
   text-align: center;
   top: 120px;
   left: 50%;
   transform: translateX(-50%);
 }
-.bitrateOptions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
+.playlist-mobile {
+    position: fixed;
+    text-align: center;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
 }
 
-.bitrateOptions .audioButton {
-  display: block;
-  margin-bottom: 5px;
-}
 .audioButton{
+  font-size: 0.5em;
   position: fixed;
-  top: 50px;
-  right: 10%; 
-  background-color: #00bcd4; 
-  color: white; 
-  border: none; 
-  padding: 10px 20px; 
-  text-align: center; 
-  text-decoration: none; 
-  display: inline-block; 
-  font-size: 16px; 
-  margin: 4px 2px; 
-  cursor: pointer; 
-  border-radius: 5px; 
-  width: 15%;
+  top: 265px;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
+  width: 100%;
 }
-.audioButton:hover {
-  background-color: rgb(#0b3c42); 
+
+.default-bitrate{
+  background-color: #00bcd4;
+  width:30%;
+  height: 40px;
 }
-.c2 {
+.c1{
+  background-color: #00bcd4;
+  width:30%;
+  height: 40px;
+  position: relative;
+  bottom:40px;
+}
+.c2{
+  background-color: #00bcd4;
+  width:30%;
+  height: 40px;
+  position: relative;
+  bottom:40px;
+}
+.c3{
+  background-color: #00bcd4;
+  width:30%;
+  height: 40px;
+  position: relative;
+  bottom:40px;
+}
+.audioButton-mobile{
+  font-size: 0.5em;
   position: fixed;
-  top: 90px;
+  top: 175px;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
 }
-.c3 {
-  position: fixed;
-  top: 130px;
+.default-bitrate-mobile{
+  background-color: #00bcd4;
+  width:50%;
+}
+.mc1{
+  background-color: #00bcd4;
+  width:30%;
+  position:relative;
+  bottom:22px;
+}
+.mc2{
+  background-color: #00bcd4;
+  width:30%;
+  position:relative;
+  bottom:22px;
+}
+.mc3{
+  background-color: #00bcd4;
+  width:30%;
+  position:relative;
+  bottom:22px;
 }
 #muteVol{
-  font-size: 2.5em;
-  position: fixed;
-  bottom: 50px;
-  right: 27%;
+  font-size: 0.7em;
+  border: 10px;
+  color: #fff;
   background-color: black;
+  position: fixed;
+  right: 275px;
+  bottom: 90px;
+  height:20px;
+}
+#muteVol-mobile{
+  font-size: 1.5em;
+  background-color: rgba(0, 0, 0, 0);
   border: none;
+  color:#ffffff;
+  position: relative;
+  bottom:5px;
+  right: 1px;
 }
 .volume-control{
   position: fixed;
-  width: 25%;
-  right: 2px;
-  bottom: 56px;
+  right: 60px;
+  font-size: 2em;
+  bottom: 50px;
 }
+.volume-control-mobile{
+  display: flex;
+  position: fixed;
+  top:260px;
+  left:25%;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
+}
+
 #playButton{
   font-size: 4em;
   position: fixed;
@@ -170,11 +348,29 @@ footer{
   left: 50%;
   transform: translateX(-50%);
 }
+#playButtonMobile{
+  font-size: 2em;
+  position: fixed;
+  bottom: 28px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  color : #ffffff;
+  background-color: black;
+  border: none;
+  left: 10%;
+  transform: translateX(-50%);
+  z-index: 1001; 
+}
 
 table{
+
   width: 80%;
   position: relative;
-  margin: auto;
+  margin:auto;
+  margin-top: 100px;
+  font-size: 1.2em;
 }
 
 th, td {
@@ -184,19 +380,32 @@ th, td {
     text-align: center;
 }
 .bg-centre{
-  margin: 34% auto;/*
+  margin-top: 50px;
+  margin-bottom: 50px ;/*
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: 1fr;
   position: absolute;*/
-  width: 200%;
+  width: 900px;
   background-color: #0000008e;
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px) grayscale(0.5) opacity(0.2);
-  transform: translateX(-25%);
+  /*transform: translateX(-25%);*/
+}
+.bg-centre-mobile{
+  font-size: 0.6em;
+  margin-top: 0px;
+  margin-bottom: 0px ;
+  width: 95%;
+  background-color: #0000008e;
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px) grayscale(0.5) opacity(0.2);
 }
 .four{
   text-align: center;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 40px;
+  margin-bottom: 150px;
+}
+.bresil{
+  display: none;
 }

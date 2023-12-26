@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-const MetadataGet = () => {
+const MetadataGet = ({ isMobile }) => {
   const [metadata, setMetadata] = useState({
     artist: '',
     title: '',
@@ -92,18 +92,20 @@ const MetadataGet = () => {
 
   return (
     <div>
-      {hasPlaylist && <div id="playlist">{metadata.playlist}</div>}
+      {hasPlaylist && <div className={isMobile ? 'playlist-mobile' : 'playlist'}>{metadata.playlist}</div>}
       <div>
-        <div className='metadata'>
+      <div className={isMobile ? 'metadata-mobile' : 'metadata'}>
           <h3>{metadata.title} </h3>
           <h3> {metadata.artist}</h3>
           <p>{formatTime(metadata.elapsedUpdate)} / {formatTime(metadata.duration)}</p>
         </div>
-        <div className="custom-progress">
+        <div className={isMobile ? 'custom-progress-mobile' : 'custom-progress'}>
           <div id="progress-bar" style={{ width: `${progress}%` }}></div>
         </div>
       </div>
-      <img src={metadata.songImg} id="cover-np-song" alt="Cover" />
+      <div>
+        <img src={metadata.songImg} id={isMobile ? 'cover-np-song-mobile' : 'cover-np-song'} alt="Cover" />
+      </div>
     </div>
   );
 };

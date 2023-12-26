@@ -14,13 +14,13 @@ const UserAgent = () => {
   }, []);
 
   return (
-    <div className={isMobile ? 'mobile-body' : 'body'}>
+    <div className={isMobile ? 'body-mobile' : 'body'}>
       <header><Header isMobile={isMobile} /></header>
-      <div className='bg-centre'>
+      <div className={isMobile ? 'bg-centre-mobile' : 'bg-centre'}>
         <Schedule isMobile={isMobile} />
         <Endpage isMobile={isMobile} />
       </div>
-      <footer><AudioPlayer isMobile={isMobile} /></footer>
+      <div className={isMobile ? 'footer-mobile' : 'footer'}><AudioPlayer isMobile={isMobile} /></div>
     </div>
   );
 };

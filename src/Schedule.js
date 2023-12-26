@@ -36,7 +36,7 @@ const Schedule = () => {
     <table id="scheduleTable">
       <caption>
         <h1>Planning de diffusion</h1>
-        <h2>(Effectif jusqu'au lendemain, minuit.)</h2>
+        <h3>(Effectif jusqu'au lendemain, minuit.)</h3>
       </caption>
       <thead>
         <tr>

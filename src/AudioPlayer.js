@@ -1,14 +1,17 @@
 import AudioPlayerComp from "./AudioPlayer/AudioPlayerComp";
-import VolumeControl from "./AudioPlayer/VolumeControl";
+import VolumeControl2 from "./Header/VolumeControl2";
 import MetadataGet from "./AudioPlayer/MetadataGet";
-function AudioPlayer(){
+function AudioPlayer( {isMobile} ){
     return (
         <div>
              <div className='lecteurAudio'>
-            <AudioPlayerComp />
-            <VolumeControl />
-            <MetadataGet />
-            </div>
+            <AudioPlayerComp isMobile={isMobile}/>
+            <div className={isMobile ? 'bresil' : 'volume-control'}>
+            <VolumeControl2 isMobile={isMobile}/>
+            <div/></div>
+            <MetadataGet isMobile={isMobile}/>
+            
+        </div>
         </div>
     )
 
