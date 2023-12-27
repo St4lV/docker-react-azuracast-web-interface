@@ -21,7 +21,7 @@ This project is meant to be run with docker using 2 containers :
  * [x] Custom audio player 
  * [x] Album/song cover integration
  * [x] Mobile page (95% only design tweaks left)
- * [ ] Song & last 5 played display when you clck on song metadata
+ * [x] Song & last 5 played display when you clck on song metadata
  * [ ] EQ Visualiser
  * [ ] Switch language on main page (French, English)
  * [ ] Rate song popularity (upvote or downvote when song is playing)
