@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import DisplaySongInfo from './DisplaySongInfo'; 
 
 const MetadataGet = ({ isMobile }) => {
   const [metadata, setMetadata] = useState({
@@ -13,7 +14,7 @@ const MetadataGet = ({ isMobile }) => {
     playlist: '',
     streamerName: ''
   });
-
+  const [showInfo, setShowInfo] = useState(false);
   const [hasPlaylist, setHasPlaylist] = useState(false);
 
   const updateMusicInfo = useCallback((artist, title, elapsedValue, duration, songId, songImg) => {
@@ -89,25 +90,50 @@ const MetadataGet = ({ isMobile }) => {
   }, []);
 
   const progress = (metadata.elapsedUpdate / metadata.duration) * 100;
+  const metadataBlockRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (metadataBlockRef.current && !metadataBlockRef.current.contains(event.target)) {
+        setShowInfo(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleClickMetadataBlock = () => {
+    setShowInfo(!showInfo);
+  };
 
   return (
-    <div>
+    <div ref={metadataBlockRef} className='metadata-block' onClick={handleClickMetadataBlock}>
       {hasPlaylist && <div className={isMobile ? 'playlist-mobile' : 'playlist'}>{metadata.playlist}</div>}
-      <div>
       <div className={isMobile ? 'metadata-mobile' : 'metadata'}>
-          <h3>{metadata.title} </h3>
-          <h3> {metadata.artist}</h3>
-          <p>{formatTime(metadata.elapsedUpdate)} / {formatTime(metadata.duration)}</p>
-        </div>
-        <div className={isMobile ? 'custom-progress-mobile' : 'custom-progress'}>
-          <div id="progress-bar" style={{ width: `${progress}%` }}></div>
-        </div>
+        <h3>{metadata.title}</h3>
+        <h3>{metadata.artist}</h3>
+        <p>{formatTime(metadata.elapsedUpdate)} / {formatTime(metadata.duration)}</p>
+      </div>
+      <div className={isMobile ? 'custom-progress-mobile' : 'custom-progress'}>
+        <div id="progress-bar" style={{ width: `${progress}%` }}></div>
       </div>
       <div>
         <img src={metadata.songImg} id={isMobile ? 'cover-np-song-mobile' : 'cover-np-song'} alt="Cover" />
       </div>
+      {showInfo && (
+        <DisplaySongInfo
+          onClose={() => setShowInfo(false)}
+          songInfo={metadata}
+          isMobile={isMobile}
+        />
+      )}
     </div>
   );
+  
 };
 
 const formatTime = (timeInSeconds) => {
