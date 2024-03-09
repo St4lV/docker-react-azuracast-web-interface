@@ -105,6 +105,8 @@ Once it's done you can safely run
 
 **BEFORE READING THAT CHECK "*Problems i've encountered you'll probably have too*" SECTION FOR NGINX CONFIGURATION**
 
+Make sure you can access your **Azuracast** Instance and the **React UI** via http:// before running **Certbot**.
+
 I personally use Nginx to differenciate web services, so i'm using**Nginx Certbot Plugin** for SSL certificates, you can install it with
 ```bash
 apt install certbot python3-certbot-nginx
@@ -160,7 +162,7 @@ server {
     }
 }
 ```
-Make sure to adapt to your case and symlink your file from */etc/nginx/sites-available* to */etc/nginx/sites-enabled*. Check if you can access both via http://
+Make sure to adapt to your case and symlink your file from */etc/nginx/sites-available* to */etc/nginx/sites-enabled*. Check if you can access both via http:// before running **Certbot**.
 
 ---
 ### This is the 2nd version and a major upgrade of a previous project.
