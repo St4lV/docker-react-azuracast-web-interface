@@ -11,7 +11,7 @@
  * [x] Icons with link to social medias related with project
  * [x] Custom audio player 
  * [x] Album/song cover integration
- * [x] Mobile page (95% only design tweaks left)
+ * [x] Mobile page (done, could change later as i include functionnalities)
  * [x] Song & last 10 played display when you click on song metadata
  * [ ] EQ Visualiser
  * [ ] Switch language on main page (French, English)
