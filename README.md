@@ -5,7 +5,7 @@ This project is a React Web Interface running on NodeJS meant to use Azuracast s
 You can access it on https://www.tirnatek.fr
 
 ## Running
-This project is meant to be run with docker using 2 containers :
+This project is meant to be run with docker using 2 Docker containers :
 - **Azuracast container :**
   - Check out this page of documentation : https://www.azuracast.com/docs/getting-started/installation/docker/
 
