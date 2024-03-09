@@ -12,7 +12,7 @@
  * [x] Custom audio player 
  * [x] Album/song cover integration
  * [x] Mobile page (95% only design tweaks left)
- * [x] Song & last 5 played display when you clck on song metadata
+ * [x] Song & last 10 played display when you click on song metadata
  * [ ] EQ Visualiser
  * [ ] Switch language on main page (French, English)
  * [ ] Rate song popularity (upvote or downvote when song is playing)
@@ -112,7 +112,7 @@ I personally use Nginx to differenciate web services, so i'm using**Nginx Certbo
 apt install certbot python3-certbot-nginx
 certbot --nginx -d example.com -d www.example.com -d radio.example.com
 ```
-After doing this you will easily adapt the**React UI** to your own webradio, please report any issues on this repository.
+After doing this you will easily adapt the **React UI** to your own webradio, please report any issues on this repository.
 
 
 
