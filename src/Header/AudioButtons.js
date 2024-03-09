@@ -1,114 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { Howl } from 'howler';
+import React, { useState } from 'react';
 import Icon96kbps from './networkIcons/Icon96kbps';
 import Icon128kbps from './networkIcons/Icon128kbps';
 import Icon320kbps from './networkIcons/Icon320kbps';
 
 function AudioButtons({ isMobile }) {
   const [showBitrateButtons, setShowBitrateButtons] = useState(false);
-  const [currentBitrate, setCurrentBitrate] = useState({
-    icon: <Icon128kbps />,
-    visible: false,
-  });
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [howl, setHowl] = useState(null);
-
-  useEffect(() => {
-    setCurrentBitrate((prevBitrate) => ({
-      ...prevBitrate,
-      visible: true,
-    }));
-  }, []);
-
-  const audioSources = [
-    {
-      source: 'https://tirnatek.fr/listen/tntr/tntr96.mp3',
-      bitrate: '96kbps',
-    },
-    {
-      source: 'https://tirnatek.fr/listen/tntr/tntr128.mp3',
-      bitrate: '128kbps',
-    },
-    {
-      source: 'https://tirnatek.fr/listen/tntr/tntr320.mp3',
-      bitrate: '320kbps',
-    },
-  ];
+  const [currentBitrate, setCurrentBitrate] = useState(<Icon128kbps />);
 
   function toggleBitrateButtons() {
     setShowBitrateButtons(!showBitrateButtons);
-    setCurrentBitrate((prevBitrate) => ({
-      ...prevBitrate,
-      visible: !prevBitrate.visible,
-    }));
   }
 
   function handleButtonClick(event) {
     const source = event.target.getAttribute('data-source');
-
-    if (howl && howl._src === source && isPlaying) {
-      // Si la source est la même et est en cours de lecture, mettre en pause
-      howl.pause();
-      setIsPlaying(false);
-    } else {
-      // Créer un nouveau Howl pour la nouvelle source
-      const newHowl = new Howl({
-        src: [source],
-        autoplay: true,
-        onplay: () => setIsPlaying(true),
-        onpause: () => setIsPlaying(false),
-      });
-      setHowl(newHowl);
-    }
-
+    const audioElement = document.getElementById('lecteurAudio');
+    audioElement.setAttribute('src', source);
+    audioElement.load();
+    audioElement.play();
     setShowBitrateButtons(false);
-    setCurrentBitrate({
-      label: event.target.innerText,
-      icon: getIconForBitrate(event.target.getAttribute('data-bitrate')),
-      visible: true,
-    });
-  }
 
-  function getIconForBitrate(bitrate) {
-    switch (bitrate) {
-      case '96kbps':
-        return <Icon96kbps />;
-      case '128kbps':
-        return <Icon128kbps />;
-      case '320kbps':
-        return <Icon320kbps />;
-      default:
-        return null;
-    }
+    // Dynamically set the current bitrate based on the clicked button
+    const iconComponent =
+      event.target.className === (isMobile ? 'mc1' : 'c1') ? (
+        <Icon96kbps />
+      ) : event.target.className === (isMobile ? 'mc2' : 'c2') ? (
+        <Icon128kbps />
+      ) : (
+        <Icon320kbps />
+      );
+
+    setCurrentBitrate(iconComponent);
   }
 
   return (
     <div className={isMobile ? 'audioButton-mobile' : 'audioButton'}>
       <p>Adapter le débit selon votre connexion</p>
       <button className={isMobile ? 'default-bitrate-mobile' : 'default-bitrate'} onClick={toggleBitrateButtons}>
-      {currentBitrate.visible && (
-  <div>
-{currentBitrate.visible && (
-  <div>
-    {currentBitrate.icon}
-  </div>
-)}
-{currentBitrate.visible && (
-  <p>
-    {currentBitrate.label}
-  </p>
-)}
-
-  </div>
-)}
+        {currentBitrate}
       </button>
       {showBitrateButtons && (
         <div className={isMobile ? 'bitrateOptions-mobile' : 'bitrateOptions'}>
-          {audioSources.map((audio, index) => (
-            <button key={index} className={isMobile ? `mc${index + 1}` : `c${index + 1}`} data-source={audio.source} data-bitrate={audio.bitrate} onClick={handleButtonClick}>
-              {getIconForBitrate(audio.bitrate)} <p>{audio.label}</p>
-            </button>
-          ))}
+          <button className={isMobile ? 'mc1' : 'c1'} data-source="https://radio.tirnatek.fr/listen/tntr/tntr96.mp3" onClick={handleButtonClick}>
+            <Icon96kbps />
+          </button>
+          <button className={isMobile ? 'mc2' : 'c2'} data-source="https://radio.tirnatek.fr/listen/tntr/tntr128.mp3" onClick={handleButtonClick}>
+            <Icon128kbps />
+          </button>
+          <button className={isMobile ? 'mc3' : 'c3'} data-source="https://radio.tirnatek.fr/listen/tntr/tntr320.mp3" onClick={handleButtonClick}>
+            <Icon320kbps />
+          </button>
         </div>
       )}
     </div>

@@ -9,6 +9,10 @@ body{
   color: white; 
   margin: 0;
   padding: 0; 
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 .body, .body-mobile {
   display: flex;
@@ -347,6 +351,7 @@ body{
   width: 75px;
   height: 75px;
   text-align: center;
+  color:#ffffff;
   background-color: black;
   border: none;
   left: 50%;
@@ -413,15 +418,15 @@ th, td {
 .bresil{
   display: none;
 }
-/* Votre style CSS existant */
 
 .history-song {
   position: fixed;
-  top: 200px;
+  top: 20%;
   width: 60%;
   left: 20%;
   background-color: #0000009f;
   z-index: 0;
+  scrollbar-width: none;
 }
 .history-song-mobile {
   font-size:0.8em;
@@ -432,6 +437,7 @@ th, td {
   background-color: #0000009f;
   z-index: -1000;
   bottom:125px;
+  scrollbar-width: none;
 }
 /* Styles pour la section "Now Playing" */
 

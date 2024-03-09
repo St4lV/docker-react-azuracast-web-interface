@@ -1,5 +1,5 @@
 import React from 'react';
-import icon320kbps from './iconedébit3.png'; // Remplacez par le chemin correct de votre icône
+import icon320kbps from './iconedebit3.png'; // Remplacez par le chemin correct de votre icône
 
     const Icon320kbps = ({ altText, size = 2,width, height, ...rest }) => {
       const styles = {

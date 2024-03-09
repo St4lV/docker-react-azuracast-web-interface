@@ -28,7 +28,7 @@ function SocialIcons({ isMobile }) {
                   <FontAwesomeIcon icon={faInstagram} />
                 </div>
               </a>
-              <a href="https://discord.gg/GJgnaYJ8jQ" className="liendiscord" target="_blank" rel="noreferrer">
+              <a href="https://discord.gg/mCY6mPP7Gw" className="liendiscord" target="_blank" rel="noreferrer">
                 <div className="apb-discord">
                   <FontAwesomeIcon icon={faDiscord} />
                 </div>

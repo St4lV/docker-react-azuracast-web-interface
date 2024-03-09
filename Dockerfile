@@ -13,7 +13,6 @@ RUN npm run build
 
 # Installer serve pour servir les fichiers statiques
 RUN npm install -g serve
-RUN npm install howler
 
 # Définir la variable d'environnement pour le port
 ENV PORT=3000

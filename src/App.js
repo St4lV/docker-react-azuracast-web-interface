@@ -5,7 +5,7 @@ import UserAgent from './userAgentSwitch';
 function App() {
   return (
     <div>
-      <UserAgent />
+      <UserAgent/>
     </div>
   );
 }

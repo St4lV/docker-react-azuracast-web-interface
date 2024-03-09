@@ -1,5 +1,5 @@
 import React from 'react';
-import icon96kbps from './iconedébit1.png'; // Remplacez par le chemin correct de votre icône
+import icon96kbps from './iconedebit1.png'; // Remplacez par le chemin correct de votre icône
 
     const Icon96kbps = ({ altText, size = 2,width, height, ...rest }) => {
       const styles = {

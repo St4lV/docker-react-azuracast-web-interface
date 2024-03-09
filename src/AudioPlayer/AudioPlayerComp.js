@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 
 function AudioPlayerComp({ isMobile }) {
-  const audioSource = 'https://tirnatek.fr/listen/tntr/tntr128.mp3';
+  const audioSource = 'https://radio.tirnatek.fr/listen/tntr/tntr128.mp3';
   const [isPlaying, setIsPlaying] = useState(false);
   function handlePlayPauseClick() {
     const lecteurAudio = document.getElementById('lecteurAudio');

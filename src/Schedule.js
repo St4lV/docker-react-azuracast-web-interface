@@ -6,7 +6,7 @@ const Schedule = () => {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch('https://tirnatek.fr/api/station/tntr/schedule?now=now&rows=48');
+        const response = await fetch('https://radio.tirnatek.fr/api/station/tntr/schedule?now=now&rows=48');
         const gp = await response.json();
 
         const scheduleRows = gp.map((playlist, index) => {

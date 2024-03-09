@@ -31,7 +31,7 @@ const MetadataGet = ({ isMobile }) => {
   }, []);
 
   const fetchData = useCallback(() => {
-    fetch('https://tirnatek.fr/api/nowplaying_static/tntr.json')
+    fetch('https://radio.tirnatek.fr/api/nowplaying_static/tntr.json')
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch data');

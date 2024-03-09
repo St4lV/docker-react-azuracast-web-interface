@@ -6,7 +6,7 @@ const RadioPlayer = ({ isMobile }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://tirnatek.fr/api/nowplaying_static/tntr.json');
+        const response = await fetch('https://radio.tirnatek.fr/api/nowplaying_static/tntr.json');
         const data = await response.json();
         setRadioData(data);
       } catch (error) {
