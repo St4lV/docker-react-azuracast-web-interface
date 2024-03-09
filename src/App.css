@@ -282,6 +282,7 @@ body::-webkit-scrollbar {
   justify-content: center;
   align-items: flex-start;
   text-align: center;
+  width:100%;
 }
 .default-bitrate-mobile{
   background-color: #00bcd4;
@@ -294,6 +295,7 @@ body::-webkit-scrollbar {
   position:relative;
   bottom:40px;
   height: 40px;
+
 }
 .mc2{
   background-color: #00bcd4;
@@ -308,6 +310,7 @@ body::-webkit-scrollbar {
   position:relative;
   bottom:40px;
   height: 40px;
+
 }
 #muteVol{
   font-size: 0.7em;
