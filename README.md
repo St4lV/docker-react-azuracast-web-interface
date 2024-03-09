@@ -19,7 +19,7 @@ This project is meant to be run with docker using 2 Docker containers :
  * [x] Audio flux quality choice (128kbps (default); 320kbps; 96kbps)
  * [x] Diffusion schedule up to next day, 23h59 UTC+1 Paris.
  * [x] Timer for playing song
- * [x] Images buttons with link to social medias related with project
+ * [x] Icons with link to social medias related with project
  * [x] Custom audio player 
  * [x] Album/song cover integration
  * [x] Mobile page (95% only design tweaks left)
@@ -30,6 +30,6 @@ This project is meant to be run with docker using 2 Docker containers :
 ---
 ### This is the 2nd version and a major upgrade of a previous project.
 
-Old version : https://github.com/St4lV/St4lV.github.io
+Old version : https://github.com/St4lV/tirnatek.github.io
 
 ---
