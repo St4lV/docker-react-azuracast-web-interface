@@ -21,7 +21,7 @@
 ## WIKI
 If you want to use this project as a base for you own, consider checking this :
 
-https://github.com/St4lV/docker-react-azuracast-web-interface/wiki/Main
+[https://github.com/St4lV/docker-react-azuracast-web-interface/wiki/Main](https://github.com/St4lV/docker-react-azuracast-web-interface/wiki/Installing-the-project)
 
 ---
 ### This is the 2nd version and a major upgrade of a previous project.
