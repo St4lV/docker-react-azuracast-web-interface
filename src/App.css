@@ -66,7 +66,7 @@ body::-webkit-scrollbar {
 .social-icons-mobile{
   
   width: 100%;
-  height: 200px;
+  height: 230px;
   margin-top: 100px;
   background-image: linear-gradient(to bottom, #000000, #0000009f);
   z-index: 999;
@@ -237,6 +237,24 @@ body::-webkit-scrollbar {
     transform: translateX(-50%);
     font-size: 0.8em;
     z-index: 1500;
+}
+.next-song-display{
+  font-size: 1.1em;
+  position: fixed;
+  top: 350px;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
+  width: 100%;
+}
+.m-next-song-display{
+  font-size: 0.5em;
+  position: fixed;
+  top: 290px;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
+  width: 100%;
 }
 
 .audioButton{

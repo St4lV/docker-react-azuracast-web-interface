@@ -4,6 +4,7 @@ import { faInstagram, faDiscord, faGithub } from '@fortawesome/free-brands-svg-i
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import VolumeControl from "./VolumeControl";
 import AudioButtons from './AudioButtons';
+import NextSong from './NextSong';
 
 function SocialIcons({ isMobile }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -44,6 +45,9 @@ function SocialIcons({ isMobile }) {
          <VolumeControl isMobile={isMobile}/>
         </div>
           <AudioButtons isMobile={isMobile}/>
+          <div className={isMobile ? 'next-song-display' : 'm-next-song-display'}>
+         <NextSong isMobile={isMobile}/>
+        </div>
         </div>
       )}
     </div>
