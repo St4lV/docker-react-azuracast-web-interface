@@ -3,6 +3,19 @@ import React, { useState, useEffect } from 'react';
 const RadioPlayer = ({ isMobile }) => {
   const [radioData, setRadioData] = useState(null);
 
+  const [maxHeight, setMaxHeight] = useState('calc(100vh - 300px)');
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMaxHeight(`calc(100vh - 300px)`);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,7 +35,7 @@ const RadioPlayer = ({ isMobile }) => {
     }, []);
 
   return (
-    <div className={isMobile ? 'history-song-mobile' : 'history-song'} style={{ maxHeight: '500px', overflowY: 'scroll' }}>
+    <div className={isMobile ? 'history-song-mobile' : 'history-song'} style={{ maxHeight: maxHeight, overflowY: 'scroll' }}>
       {radioData && (
         <div>
           <h2>Now Playing:</h2>

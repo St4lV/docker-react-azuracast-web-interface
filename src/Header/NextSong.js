@@ -3,13 +3,15 @@ import { useState, useCallback, useEffect } from "react";
 const NextSong = ({ isMobile }) => {
   const [nextsong, setNextsong] = useState({
     text: '',
+    playlist: '',
     elapsedUpdate: 0
   });
 
-  const updateMusicInfo = useCallback((text) => {
+  const updateMusicInfo = useCallback((text, playlist) => {
     setNextsong(prevNextsong => ({
       ...prevNextsong,
       text,
+      playlist,
     }));
   }, []);
 
@@ -23,7 +25,8 @@ const NextSong = ({ isMobile }) => {
       })
       .then(ns => {
         const text = ns.playing_next.song.text;
-        updateMusicInfo(text);
+        const playlist = ns.playing_next.playlist;
+        updateMusicInfo(text, playlist);
   
         setTimeout(fetchData, 15000);
       })
@@ -32,14 +35,13 @@ const NextSong = ({ isMobile }) => {
         setTimeout(fetchData, 30000);
       });
   }, [updateMusicInfo]);
-  
 
   useEffect(() => {
     const fetchDataWrapper = () => {
       fetchData();
     };
     fetchDataWrapper();
-  }, [fetchData]); 
+  }, [fetchData]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,8 +58,12 @@ const NextSong = ({ isMobile }) => {
     <div>
       <div className={isMobile ? 'm-next-song-display' : 'next-song-display'}>
         <h3>Prochain Titre : {nextsong.text}</h3>
+        <h3 className={isMobile ? 'm-nxsg-playlist' : 'nxsg-playlist'}>
+          Playlist : {nextsong.playlist}
+        </h3>
       </div>
     </div>
   );
 };
+
 export default NextSong;
