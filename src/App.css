@@ -7,6 +7,7 @@ body {
   margin: 0;
   padding: 0;
   scrollbar-width: none;
+  align-items: center;
 }
 body::-webkit-scrollbar {
   display: none;
@@ -15,6 +16,7 @@ body::-webkit-scrollbar {
   display: flex;
   height: 100%;
   justify-content: center;
+  align-items: center;
 }
 .header {
   text-align: center;
@@ -258,10 +260,6 @@ body::-webkit-scrollbar {
 .next-song-display, .m-next-song-display, .volume-control, .volume-control-mobile, .audioButton, .audioButton-mobile {
   display: block; /* Ensure these are block elements to take up space when visible */
 }
-.volume-control-mobile{
-  font-size: 2em;
-  left:20%;
-}  
 .next-song-container.visible{
   font-size: 0.4em;
   background-color: #000000;
@@ -372,10 +370,7 @@ body::-webkit-scrollbar {
   right: 1px;
 }
 .volume-control{
-  position: fixed;
-  right: 60px;
-  font-size: 2em;
-  bottom: 50px;
+  display: none;
 }
 .volume-control-mobile{
   display: flex;
@@ -384,6 +379,17 @@ body::-webkit-scrollbar {
   /*justify-content: center;*/
   align-items: flex-start;
   /*text-align: center;*/
+  font-size: 2em;
+  left:20%;
+}
+.volume-control2{
+  position: fixed;
+  right: 60px;
+  font-size: 2em;
+  bottom: 50px;
+}
+.volume-control-mobile2{
+  display: none;
 }
 #playButton{
   font-size: 4em;
@@ -442,6 +448,8 @@ th, td {
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px) grayscale(0.5) opacity(0.2);
   /*transform: translateX(-25%);*/
+  justify-content: center;
+  align-items: center;
 }
 .bg-centre-mobile{
   font-size: 0.6em;
@@ -451,6 +459,8 @@ th, td {
   background-color: #0000008e;
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px) grayscale(0.5) opacity(0.2);
+  justify-content: center;
+  align-items: center;
 }
 .four{
   text-align: center;
@@ -531,9 +541,4 @@ th, td {
   align-items: center;
   margin-bottom: 10px;
 }
-h2{
-  background-color: #000000;
-  height: 100%;
-  position: relative;
-  top: 0px;
-}
+
