@@ -7,6 +7,8 @@ body {
   margin: 0;
   padding: 0;
   scrollbar-width: none;
+  justify-content: center;
+  align-items: center;
 }
 body::-webkit-scrollbar {
   display: none;
@@ -15,6 +17,7 @@ body::-webkit-scrollbar {
   display: flex;
   height: 100%;
   justify-content: center;
+  align-items: center;
 }
 .header {
   text-align: center;
@@ -82,6 +85,41 @@ body::-webkit-scrollbar {
 .social-icons-mobile.open {
   height: 230px;
 }
+.main-menu {
+  position: fixed;
+  left: 0px;
+  top: 150px;
+  opacity: 0;
+  visibility: hidden;
+  width: 0px;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, width 0.7s ease-in-out;
+  height: 100%;
+  background-image: linear-gradient(to right, #000000, #0000009f);
+}
+
+.main-menu.open {
+  opacity: 1;
+  visibility: visible;
+  width: 30%;
+}
+.main-menu-mobile {
+  position: fixed;
+  left: 0px;
+  top: 100px;
+  opacity: 0;
+  visibility: hidden;
+  width: 0px;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, width 0.5s ease-in-out;
+  height: 100%;
+  background-image: linear-gradient(to left, #000000, #0000009f);
+}
+
+.main-menu-mobile.open {
+  opacity: 1;
+  visibility: visible;
+  width: 80%;
+}
+
 .dropdown-content {
   width: 100%;
   transition: all 0.5s ease-in-out;
@@ -96,21 +134,58 @@ body::-webkit-scrollbar {
   z-index: 1;
 }
 .apb-barres {
-  font-size: 4em;
+  font-size: 5em;
   color: white;
   display: flex;
   position: fixed;
-  margin-left: 5%;
-  top: 35px;
+  left: 6px;
+  top: 27px;
   gap: 3em;
 }
 .apb-barres-mobile {
+  font-size: 2.8em;
+  color: white;
+  display: flex;
+  position: fixed;
+  left: 10px;
+  top: 22px;
+  gap: 3em;
+}
+.apb-gear {
   font-size: 2em;
   color: white;
   display: flex;
   position: fixed;
-  margin-left: 5%;
-  top: 35px;
+  right: 15px;
+  top: 154px;
+  gap: 3em;
+}
+.apb-gear-mobile {
+  font-size: 1.4em;
+  color: white;
+  display: flex;
+  position: fixed;
+  right: 5px;
+  top: 109px;
+  gap: 3em;
+}
+.apb-gear-menu {
+  font-size: 3.4em;
+  color: white;
+  display: flex;
+  position: fixed;
+  right: 15px;
+  top: 154px;
+  gap: 3em;
+}
+.apb-gear-menu-mobile {
+  font-size: 3.5em;
+  color: white;
+  display: flex;
+  position: fixed;
+  right: 5px;
+  top: 109px;
+  gap: 3em;
 }
 .apb-insta {
   font-size: 3em;
@@ -243,14 +318,14 @@ body::-webkit-scrollbar {
     font-size: 0.8em;
     z-index: 1500;
 }
-.next-song-container, .volume-control-container, .audio-buttons-container {
+.next-song-container, .volume-control-container, .audio-buttons-container, .gear-menu {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s ease-in-out, visibility 0.2s ease-in-out;
+  transition: opacity 1s ease-in-out, visibility 0.1s ease-in-out;
   font-size: 0.4em;
 }
 
-.next-song-container.visible, .volume-control-container.visible, .audio-buttons-container.visible {
+.next-song-container.visible, .volume-control-container.visible, .audio-buttons-container.visible, .gear-menu.visible {
   opacity: 1;
   visibility: visible;
 }
@@ -258,10 +333,6 @@ body::-webkit-scrollbar {
 .next-song-display, .m-next-song-display, .volume-control, .volume-control-mobile, .audioButton, .audioButton-mobile {
   display: block; /* Ensure these are block elements to take up space when visible */
 }
-.volume-control-mobile{
-  font-size: 2em;
-  left:20%;
-}  
 .next-song-container.visible{
   font-size: 0.4em;
   background-color: #000000;
@@ -277,16 +348,6 @@ body::-webkit-scrollbar {
 }
 .m-nxsg-playlist{
   display: none;
-}
-
-.audioButton{
-  font-size: 1em;
-  position: fixed;
-  top: 300px;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: center;
-  width: 100%;
 }
 
 .default-bitrate{
@@ -315,8 +376,17 @@ body::-webkit-scrollbar {
   position: relative;
   bottom:40px;
 }
+.audioButton{
+  font-size: 1.4em;
+  position: fixed;
+  top: 300px;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
+  width: 100%;
+}
 .audioButton-mobile{
-  font-size: 0.5em;
+  font-size: 1.4em;
   position: fixed;
   top: 175px;
   justify-content: center;
@@ -372,10 +442,7 @@ body::-webkit-scrollbar {
   right: 1px;
 }
 .volume-control{
-  position: fixed;
-  right: 60px;
-  font-size: 2em;
-  bottom: 50px;
+  display: none;
 }
 .volume-control-mobile{
   display: flex;
@@ -384,6 +451,17 @@ body::-webkit-scrollbar {
   /*justify-content: center;*/
   align-items: flex-start;
   /*text-align: center;*/
+  font-size: 2em;
+  left:20%;
+}
+.volume-control2{
+  position: fixed;
+  right: 60px;
+  font-size: 2em;
+  bottom: 50px;
+}
+.volume-control-mobile2{
+  display: none;
 }
 #playButton{
   font-size: 4em;
@@ -442,6 +520,8 @@ th, td {
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px) grayscale(0.5) opacity(0.2);
   /*transform: translateX(-25%);*/
+  justify-content: center;
+  align-items: center;
 }
 .bg-centre-mobile{
   font-size: 0.6em;
@@ -451,8 +531,12 @@ th, td {
   background-color: #0000008e;
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px) grayscale(0.5) opacity(0.2);
+  justify-content: center;
+  align-items: center;
 }
 .four{
+  justify-content: center;
+  align-items: center;
   text-align: center;
   margin-top: 40px;
   margin-bottom: 150px;
@@ -531,9 +615,4 @@ th, td {
   align-items: center;
   margin-bottom: 10px;
 }
-h2{
-  background-color: #000000;
-  height: 100%;
-  position: relative;
-  top: 0px;
-}
+
