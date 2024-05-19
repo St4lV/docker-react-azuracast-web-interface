@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import Header from '../Header';
-import AudioPlayer from '../AudioPlayer';
-import Endpage from '../EndPage';
-import Episode from './Episode';
+import { useParams, useLocation } from 'react-router-dom';
+import Episode from './Podcasts/Episode';
 
 const PodcastPage = ({ isMobile }) => {
-  //const { urlEncodedTitle } = useParams();*/}
+  const { urlEncodedTitle } = useParams();
   const location = useLocation();
-  const { id } = location.state || {};
+  const { id } = location.state || {}; // Use 'id' from location state
   const [podcastData, setPodcastData] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
@@ -90,9 +87,6 @@ const PodcastPage = ({ isMobile }) => {
 
   return (
     <>
-      <header>
-        <Header isMobile={isMobile} />
-      </header>
       <h1 className={isMobile ? 'm-artist-comp-page' : 'artist-comp-page'}>
         {podcastData.title || 'No title available'}
       </h1>
@@ -106,17 +100,11 @@ const PodcastPage = ({ isMobile }) => {
           <h2>Description:</h2>
           <p>{podcastData.description || "Non spécifié"}</p>
         </div>
-        <div className={isMobile ? 'm-episodes-list' : 'episodes-list'}>
-          {episodes.map(episode => (
-            <Episode key={episode.id} episode={episode} isMobile={isMobile} />
-          ))}
-        </div>
       </div>
-      <div className={isMobile ? 'm-p-endpage' : 'p-endpage'}>
-        <Endpage isMobile={isMobile} />
-      </div>
-      <div className={isMobile ? 'footer-mobile' : 'footer'}>
-        <AudioPlayer isMobile={isMobile} />
+      <div className="episodes-list">
+        {episodes.map(episode => (
+          <Episode key={episode.id} episodeId={episode.id} podcastId={id} isMobile={isMobile}/>
+        ))}
       </div>
     </>
   );

@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+import AudioPlayerContext from '../AudioPlayerContext';
 
 function AudioPlayerComp({ isMobile }) {
-  const audioSource = 'https://radio.tirnatek.fr/listen/tntr/tntr128.mp3';
-  const [isPlaying, setIsPlaying] = useState(false);
-  function handlePlayPauseClick() {
-    const lecteurAudio = document.getElementById('lecteurAudio');
+  const { isPlaying, play, pause, audioElementRef } = useContext(AudioPlayerContext);
 
-    if (lecteurAudio.paused) {
-      lecteurAudio.play();
-      setIsPlaying(true);
-    } else {
-      lecteurAudio.pause();
-      setIsPlaying(false);
+  useEffect(() => {
+    // Ensure the audio element is attached to the ref
+    if (audioElementRef.current && !audioElementRef.current.src) {
+      audioElementRef.current.src = 'https://radio.tirnatek.fr/listen/tntr/tntr128.mp3'; // Base source
     }
-  }
+  }, [audioElementRef]);
+
+  const handlePlayPauseClick = () => {
+    if (isPlaying) {
+      pause();
+    } else {
+      play(audioElementRef.current.src);
+    }
+  };
+
   return (
     <div>
       <button id={isMobile ? 'playButtonMobile' : 'playButton'} onClick={handlePlayPauseClick}>
@@ -23,8 +28,8 @@ function AudioPlayerComp({ isMobile }) {
           <FontAwesomeIcon id="icon-play" icon={isPlaying ? faStop : faPlay} />
         </div>
       </button>
-      <audio id="lecteurAudio" controls>
-        <source src={audioSource} type="audio/mp3" style={{ display: 'none' }} />
+      <audio id="lecteurAudio" controls ref={audioElementRef}>
+        <source src="https://radio.tirnatek.fr/listen/tntr/tntr128.mp3" type="audio/mp3" />
         Votre navigateur ne supporte pas l'élément audio.
       </audio>
     </div>

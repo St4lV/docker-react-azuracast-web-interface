@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import DisplaySongInfo from './DisplaySongInfo';
+import TNTRQRCODE from '../TNTRQRCODE.png'
 
 const MetadataGet = ({ isMobile }) => {
   const [metadata, setMetadata] = useState({
@@ -123,9 +124,9 @@ const MetadataGet = ({ isMobile }) => {
       </div>
       <div>
         <img 
-          src={metadata.songImg || 'https://radio.tirnatek.fr/static/uploads/album_art.1709933169.png'} 
+          src={metadata.songImg} 
           id={isMobile ? 'cover-np-song-mobile' : 'cover-np-song'} 
-          alt='https://radio.tirnatek.fr/static/uploads/album_art.1709933169.png' 
+          alt={TNTRQRCODE}  
           onError={(e) => e.target.src = e.target.alt} // Fallback to alt URL if image fails to load
         />
       </div>

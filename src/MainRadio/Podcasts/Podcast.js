@@ -46,7 +46,7 @@ const Podcast = ({ podcast, isMobile }) => {
             <img
               src={imageDataUrl || 'https://via.placeholder.com/100'}
               alt={podcast.title || 'Podcast Art'}
-              id={isMobile ? 'm-artist-art' : 'artist-art'}
+              className={isMobile ? 'm-artist-art' : 'artist-art'}
             />
             <p>{podcast.episodes || 'N/A'} sets</p>
             <p>Localisation: {podcast.language || 'No language specified'}</p>

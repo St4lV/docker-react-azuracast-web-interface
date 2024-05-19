@@ -1,29 +1,3 @@
-.h-djsets{
-  margin-top: 150px;
-  background-color: rgba(0, 0, 0, 0.719);
-  height: 50px;
-}
-.m-h-djsets{
-  margin-top: 130px;
-  background-color: rgba(0, 0, 0, 0.719);
-  height: 50px;
-}
-
-.main-djsets {
-  position: relative;
-  top: 0px;
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-.m-main-djsets {
-    position: relative;
-    top: 0px;
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-  
 .artist-comp {
     background-color: #0000009f;
     width: 155px;
@@ -35,10 +9,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-radius: 5%;
   }
   
 .m-artist-comp{
     background-color: #0000009f;
+    max-width: 110px;
     width: 110px;
     margin: 5px;
     padding: -5%;
@@ -47,7 +23,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 0.5em;
+    font-size: 0.6em;
+    border-radius: 5%;
 }; 
 .artist-comp-content {
     font-size: 15px;
@@ -56,7 +33,7 @@
     align-items: center;
 }
 .m-artist-comp-content{
-    font-size: 1.5em;
+    font-size: 1em;
     display:flex;
     flex-direction: column;
     align-items: center;
@@ -75,33 +52,34 @@
     text-decoration: none;
     color: inherit;
   }
-#artist-art{
+.artist-art{
     border-radius: 50%;
     width: 150px;
     height: 150px;
 }
-#m-artist-art{
+.m-artist-art{
     border-radius: 50%;
     width: 90px;
     height: 90px;
 }
 .artist-comp-page {
-  position: fixed;
+  position: absolute;
   top: 140px;
   background-color: #0000009f;
-  width: 100%;
+  width: 97%;
   height: auto;
   margin: 5px;
   padding: 10px;
   justify-content: center;
   align-items: center;
   display: flex;
+  
 }
 .m-artist-comp-page{
-  position: fixed;
+  position: absolute;
   top: 75px;
   background-color: #0000009f;
-  width: 100%;
+  width: 94%;
   height: auto;
   padding: 10px;
 }
@@ -125,6 +103,7 @@
   margin-top: 220px;
   position: absolute;
   margin-left: 250px;
+  max-width: 60%;
 }
 .m-artist-desc-page{
   font-size: 1em;
@@ -152,10 +131,13 @@
 }
 .p-endpage{
   font-size: 0.85em;
+  margin-top: 65%;
+  margin-bottom: 200px;
 }
 .m-p-endpage{
   margin-top: 100%;
   font-size: 0.5em; 
+  margin-bottom: 100px;
 }
 .episode-art{
   border-radius: 10%;
@@ -168,10 +150,11 @@
   display: flex;
   flex-direction: column;
   top: 500px;
-  left:0px;
-  margin-bottom: 200px;
-  width: 100%;
+  left:20px;
+  margin-bottom: 50px;
+  width: 93%;
   background-color: #0000005d;
+  border-radius: 5%;
 }
 .m-episode-art{
   border-radius: 10%;
@@ -183,8 +166,21 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  left:0px;
+  margin-left:10px;
   top:320px;
-  width: 100%;
+  width: 90%;
   background-color: #0000005d;
+}
+.episode-desc{
+  margin-left: 250px;
+  position: relative;
+  bottom: 200px;
+  max-width: fit-content;
+}
+.m-episode-desc{
+  margin-left: 110px;
+  position: relative;
+  bottom: 110px;
+  max-width: fit-content;
+  font-size: 0.6em;
 }

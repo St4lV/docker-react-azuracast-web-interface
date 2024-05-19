@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import AudioPlayerContext from '../AudioPlayerContext';
 
-const Episode = ({ episode, isMobile }) => {
+const Episode = ({ episodeId, podcastId, isMobile }) => {
+  const [episode, setEpisode] = useState(null);
+  const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
-  const [mediaPath, setMediaPath] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [selectedMediaUrl, setSelectedMediaUrl] = useState(null);
+  const { play, pause } = useContext(AudioPlayerContext);
 
   useEffect(() => {
     const fetchEpisodeData = async () => {
       try {
-        const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${episode.id}/episodes/${episode.media.path}`, {
+        const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${podcastId}/episode/${episodeId}`, {
           headers: {
             Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
           }
@@ -17,14 +20,49 @@ const Episode = ({ episode, isMobile }) => {
           throw new Error(`Network response was not ok: ${response.statusText}`);
         }
         const data = await response.json();
-        setMediaPath(data.media.path);
+        setEpisode(data);
+        if (data.art) {
+          fetchImageData(data.art);
+        }
+      } catch (error) {
+        setError(error);
+      }
+    };
 
-        if (episode.art) {
-          const imageResponse = await fetchWithAuthentication(episode.art);
-          if (!imageResponse.ok) {
-            throw new Error('Failed to fetch image');
+    const fetchImageData = async (imageUrl) => {
+      try {
+        const response = await fetch(imageUrl, {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
           }
-          setImageUrl(episode.art);
+        });
+        if (response.ok) {
+          const blob = await response.blob();
+          const dataUrl = URL.createObjectURL(blob);
+          setImageDataUrl(dataUrl);
+        } else {
+          throw new Error('Failed to fetch image');
+        }
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    const fetchMediaLink = async () => {
+      try {
+        const response = await fetch(`https://radio.tirnatek.fr/api/station/tntr/public/podcast/${podcastId}/episode/${episodeId}/download.mp3?refresh=0`, {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+            'Content-Type': 'audio/mpeg',
+            'Accept-Encoding': 'gzip'
+          }
+        });
+        if (response.ok) {
+          const blob = await response.blob();
+          const dataUrl = URL.createObjectURL(blob);
+          setSelectedMediaUrl(dataUrl);
+        } else {
+          throw new Error('Failed to fetch media link');
         }
       } catch (error) {
         setError(error);
@@ -32,33 +70,36 @@ const Episode = ({ episode, isMobile }) => {
     };
 
     fetchEpisodeData();
-  }, [episode.id, episode.media.path, episode.art]);
+    fetchMediaLink();
+  }, [episodeId, podcastId]);
 
-  const fetchWithAuthentication = async (url) => {
-    return fetch(url, {
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
-      }
-    });
+  const handlePlayClick = () => {
+    pause(); // Ensure the current audio is paused before playing a new one
+    play(selectedMediaUrl);
   };
 
   if (error) {
-    return <div>Error fetching episode data: {error.message}</div>;
+    return <div>Error fetching data: {error.message}</div>;
+  }
+
+  if (!episode) {
+    return <div>Loading...</div>;
   }
 
   return (
     <div className={isMobile ? 'm-episode' : 'episode'}>
       <h3>{episode.title}</h3>
       <img
-        src={imageUrl || 'https://via.placeholder.com/100'}
+        src={imageDataUrl || 'https://via.placeholder.com/100'}
         alt={episode.title || 'Episode Art'}
-        className='episodes-art'
+        className={isMobile ? 'm-episode-art' : 'episode-art'}
       />
-      <p>{episode.description || 'No description available'}</p>
-      <audio controls>
-        <source src={`https://radio.tirnatek.fr/api/station/1/podcast/${episode.id}/episodes/${mediaPath}`} type="audio/mpeg" className={isMobile ? 'm-episodes-audio' : 'episodes-audio'} />
-        Your browser does not support the audio element.
-      </audio>
+      <div className={isMobile ? 'm-episode-desc' : 'episode-desc'}>
+        <p>{episode.description || 'No description available'}</p>
+      </div>
+      <button onClick={handlePlayClick} disabled={!selectedMediaUrl}>
+        Play
+      </button>
     </div>
   );
 };

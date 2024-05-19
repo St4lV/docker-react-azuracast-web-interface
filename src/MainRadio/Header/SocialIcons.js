@@ -72,10 +72,10 @@ function SocialIcons({ isMobile }) {
       </div>
       <div className={`${isMenuOpen ? (isMobile ? 'main-menu-mobile open' : 'main-menu open') : (isMobile ? 'main-menu-mobile' : 'main-menu')}`}>
         <div className={`menu-container ${isMenuOpen ? 'visible' : ''}`}>
-          <Link to={`/` }className="link">
+          <Link to={`/` }className="link"onClick={toggleMenu}>
             <h1>La Radio</h1>
           </Link>
-          <Link to={`/sets` }className="link">
+          <Link to={`/sets` }className="link"onClick={toggleMenu}>
             <h1>DJ Sets</h1>
           </Link>
         </div>

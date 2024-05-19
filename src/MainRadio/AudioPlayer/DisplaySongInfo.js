@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import TNTRQRCODE from '../TNTRQRCODE.png'
 
 const RadioPlayer = ({ isMobile }) => {
   const [radioData, setRadioData] = useState(null);
@@ -42,9 +43,9 @@ const RadioPlayer = ({ isMobile }) => {
           <div className='np-display'>
           {radioData.now_playing?.song?.art && 
           <img 
-          src={radioData.now_playing.song.art || 'https://radio.tirnatek.fr/static/uploads/album_art.1716003428.png'} 
+          src={radioData.now_playing.song.art} 
           className={isMobile ? 'img-history-mobile' : 'img-history'} 
-          alt='cover' 
+          alt={TNTRQRCODE}  
           onError={(e) => e.target.src = e.target.alt} // Fallback to alt URL if image fails to load
         />}
           <div className='song-details'>
@@ -59,9 +60,9 @@ const RadioPlayer = ({ isMobile }) => {
             <div key={index} className='song-history-entry'>
               {song.song?.art &&
               <img 
-              src={song.song?.art || 'https://radio.tirnatek.fr/static/uploads/album_art.1716003428.png'} 
+              src={song.song?.art} 
               className={isMobile ? 'img-history-mobile' : 'img-history'} 
-              alt='cover' 
+              alt={TNTRQRCODE} 
               onError={(e) => e.target.src = e.target.alt} // Fallback to alt URL if image fails to load
             />}
               <div className='song-details'>

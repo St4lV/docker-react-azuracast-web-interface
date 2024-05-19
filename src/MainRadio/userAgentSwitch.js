@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import AudioPlayer from './AudioPlayer';
 import Schedule from './Schedule';
 import Endpage from './EndPage';
 import PodcastMain from './PodcastMain';
-import PodcastPage from './Podcasts/PodcastPage';
+import PodcastPage from './PodcastPage';
+import { AudioPlayerProvider } from './AudioPlayerContext';
 
 const UserAgent = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -16,31 +17,51 @@ const UserAgent = () => {
   }, []);
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <div className={isMobile ? 'body-mobile' : 'body'}>
-                <header>
-                  <Header isMobile={isMobile} />
-                </header>
-                <div className={isMobile ? 'bg-centre-mobile' : 'bg-centre'}>
-                  <Schedule isMobile={isMobile} />
-                  <Endpage isMobile={isMobile} />
+    <AudioPlayerProvider>
+      <Router>
+        <header>
+          <Header isMobile={isMobile} />
+        </header>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <div className={isMobile ? 'body-mobile' : 'body'}>
+                  <div className={isMobile ? 'bg-centre-mobile' : 'bg-centre'}>
+                    <Schedule isMobile={isMobile} />
+                    <Endpage />
+                  </div>
                 </div>
-                <div className={isMobile ? 'footer-mobile' : 'footer'}>
-                  <AudioPlayer isMobile={isMobile} />
+              </>
+            }
+          />
+          <Route
+            path="/sets"
+            element={
+              <>
+                <PodcastMain isMobile={isMobile} />
+                <Endpage />
+              </>
+            }
+          />
+          <Route
+            path="/sets/:urlEncodedTitle"
+            element={
+              <>
+                <PodcastPage isMobile={isMobile} />
+                <div className={isMobile ? 'm-p-endpage' : 'p-endpage'}>
+                  <Endpage />
                 </div>
-              </div>
-            </>
-          }
-        />
-        <Route path="/sets" element={<PodcastMain isMobile={isMobile} />} />
-        <Route path="/sets/:urlEncodedTitle" element={<PodcastPage isMobile={isMobile} />} />
-      </Routes>
-    </Router>
+              </>
+            }
+          />
+        </Routes>
+        <div className={isMobile ? 'footer-mobile' : 'footer'}>
+          <AudioPlayer isMobile={isMobile} />
+        </div>
+      </Router>
+    </AudioPlayerProvider>
   );
 };
 
