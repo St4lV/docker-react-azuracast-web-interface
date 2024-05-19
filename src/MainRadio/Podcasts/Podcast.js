@@ -6,7 +6,6 @@ const Podcast = ({ podcast, isMobile }) => {
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
 
-  // Function to replace spaces with underscores and encode URI components
   const urlEncodedTitle = encodeURIComponent(podcast.title.replace(/\s+/g, '_'));
 
   useEffect(() => {

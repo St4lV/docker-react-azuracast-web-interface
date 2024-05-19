@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AudioPlayerContext from '../AudioPlayerContext';
+import TNTRQRCODE from '../TNTRQRCODE.png'
 
 const Episode = ({ episodeId, podcastId, isMobile }) => {
   const [episode, setEpisode] = useState(null);
@@ -88,9 +89,9 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
 
   return (
     <div className={isMobile ? 'm-episode' : 'episode'}>
-      <h3>{episode.title}</h3>
+      <h2 id={isMobile ? 'm-episode-title' : 'episode-title'}>{episode.title}</h2>
       <img
-        src={imageDataUrl || 'https://via.placeholder.com/100'}
+        src={imageDataUrl || TNTRQRCODE}
         alt={episode.title || 'Episode Art'}
         className={isMobile ? 'm-episode-art' : 'episode-art'}
       />
@@ -98,7 +99,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
         <p>{episode.description || 'No description available'}</p>
       </div>
       <button onClick={handlePlayClick} disabled={!selectedMediaUrl}>
-        Play
+        {!selectedMediaUrl ? 'Chargement ...' : 'Lancer'}
       </button>
     </div>
   );

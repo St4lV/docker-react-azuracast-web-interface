@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Episode from './Podcasts/Episode';
+import TNTRQRCODE from './TNTRQRCODE.png'
 
 const PodcastPage = ({ isMobile }) => {
   const { urlEncodedTitle } = useParams();
@@ -88,12 +89,12 @@ const PodcastPage = ({ isMobile }) => {
   return (
     <>
       <h1 className={isMobile ? 'm-artist-comp-page' : 'artist-comp-page'}>
-        {podcastData.title || 'No title available'}
+        {podcastData.author || 'Artist not found'}
       </h1>
       <div className={isMobile ? 'm-artist-comp-content-page' : 'artist-comp-content-page'}>
         <img
-          src={imageDataUrl || 'https://via.placeholder.com/125'}
-          alt={podcastData.title || 'Podcast Art'}
+          src={imageDataUrl}
+          alt={TNTRQRCODE}
           id={isMobile ? 'm-artist-art-page' : 'artist-art-page'}
         />
         <div className={isMobile ? 'm-artist-desc-page' : 'artist-desc-page'}>

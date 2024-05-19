@@ -1,25 +1,25 @@
 .h-djsets{
-    margin-top: 150px;
-    background-color: rgba(0, 0, 0, 0.719);
-    height: 50px;
-  }
-  .m-h-djsets{
-    margin-top: 130px;
-    background-color: rgba(0, 0, 0, 0.719);
-    height: 50px;
-  }
-  
-  .main-djsets {
+  margin-top: 150px;
+  background-color: rgba(0, 0, 0, 0.719);
+  height: 50px;
+}
+.m-h-djsets{
+  margin-top: 130px;
+  background-color: rgba(0, 0, 0, 0.719);
+  height: 50px;
+}
+
+.main-djsets {
+  position: relative;
+  top: 0px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.m-main-djsets {
     position: relative;
     top: 0px;
     display: inline-flex;
     flex-wrap: wrap;
     justify-content: space-between;
-  }
-  .m-main-djsets {
-      position: relative;
-      top: 0px;
-      display: inline-flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-  }
+}
