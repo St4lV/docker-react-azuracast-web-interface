@@ -17,7 +17,7 @@ const UserAgent = () => {
   }, []);
 
   return (
-    <AudioPlayerProvider>
+    <AudioPlayerProvider isMobile={isMobile}>
       <Router>
         <header>
           <Header isMobile={isMobile} />
@@ -30,7 +30,7 @@ const UserAgent = () => {
                 <div className={isMobile ? 'body-mobile' : 'body'}>
                   <div className={isMobile ? 'bg-centre-mobile' : 'bg-centre'}>
                     <Schedule isMobile={isMobile} />
-                    <Endpage />
+                    <Endpage isMobile={isMobile} />
                   </div>
                 </div>
               </>
@@ -41,7 +41,7 @@ const UserAgent = () => {
             element={
               <>
                 <PodcastMain isMobile={isMobile} />
-                <Endpage />
+                <Endpage isMobile={isMobile} />
               </>
             }
           />

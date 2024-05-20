@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AudioPlayerContext from '../AudioPlayerContext';
-import TNTRQRCODE from '../TNTRQRCODE.png'
+import TNTRQRCODE from '../TNTRQRCODE.png';
 
 const Episode = ({ episodeId, podcastId, isMobile }) => {
   const [episode, setEpisode] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
   const [selectedMediaUrl, setSelectedMediaUrl] = useState(null);
-  const { play, pause } = useContext(AudioPlayerContext);
+  const { play, pause, setRadioPlaying } = useContext(AudioPlayerContext);
 
   useEffect(() => {
     const fetchEpisodeData = async () => {
@@ -75,8 +75,9 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
   }, [episodeId, podcastId]);
 
   const handlePlayClick = () => {
-    pause(); // Ensure the current audio is paused before playing a new one
-    play(selectedMediaUrl);
+    pause();
+    play(selectedMediaUrl, episode);
+    setRadioPlaying(false);
   };
 
   if (error) {
@@ -94,6 +95,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
         src={imageDataUrl || TNTRQRCODE}
         alt={episode.title || 'Episode Art'}
         className={isMobile ? 'm-episode-art' : 'episode-art'}
+        onError={(e) => { e.target.src = TNTRQRCODE }}
       />
       <div className={isMobile ? 'm-episode-desc' : 'episode-desc'}>
         <p>{episode.description || 'No description available'}</p>

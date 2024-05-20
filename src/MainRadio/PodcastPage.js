@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Episode from './Podcasts/Episode';
 import TNTRQRCODE from './TNTRQRCODE.png'
+import EpisodeData from './Podcasts/EpisodeData';
 
 const PodcastPage = ({ isMobile }) => {
   const { urlEncodedTitle } = useParams();
   const location = useLocation();
-  const { id } = location.state || {}; // Use 'id' from location state
+  const { id } = location.state || {};
   const [podcastData, setPodcastData] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
@@ -107,6 +108,7 @@ const PodcastPage = ({ isMobile }) => {
           <Episode key={episode.id} episodeId={episode.id} podcastId={id} isMobile={isMobile}/>
         ))}
       </div>
+      <EpisodeData/>
     </>
   );
 };

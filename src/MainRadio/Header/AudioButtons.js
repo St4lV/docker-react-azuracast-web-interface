@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Icon96kbps from './networkIcons/Icon96kbps';
 import Icon128kbps from './networkIcons/Icon128kbps';
 import Icon320kbps from './networkIcons/Icon320kbps';
+import AudioPlayerContext from '../AudioPlayerContext';
 
 function AudioButtons({ isMobile }) {
+  const { setRadioPlaying } = useContext(AudioPlayerContext);
   const [showBitrateButtons, setShowBitrateButtons] = useState(false);
   const [currentBitrate, setCurrentBitrate] = useState(<Icon128kbps />);
 
@@ -30,6 +32,7 @@ function AudioButtons({ isMobile }) {
       );
 
     setCurrentBitrate(iconComponent);
+    setRadioPlaying(true);
   }
 
   return (

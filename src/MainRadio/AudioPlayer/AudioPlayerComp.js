@@ -3,13 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 import AudioPlayerContext from '../AudioPlayerContext';
 
-function AudioPlayerComp({ isMobile }) {
+const AudioPlayerComp = ({ isMobile }) => {
   const { isPlaying, play, pause, audioElementRef } = useContext(AudioPlayerContext);
 
   useEffect(() => {
-    // Ensure the audio element is attached to the ref
     if (audioElementRef.current && !audioElementRef.current.src) {
-      audioElementRef.current.src = 'https://radio.tirnatek.fr/listen/tntr/tntr128.mp3'; // Base source
+      audioElementRef.current.src = 'https://radio.tirnatek.fr/listen/tntr/tntr128.mp3';
     }
   }, [audioElementRef]);
 
@@ -34,6 +33,6 @@ function AudioPlayerComp({ isMobile }) {
       </audio>
     </div>
   );
-}
+};
 
 export default AudioPlayerComp;
