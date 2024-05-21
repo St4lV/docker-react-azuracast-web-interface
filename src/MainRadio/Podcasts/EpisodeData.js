@@ -1,9 +1,38 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import AudioPlayerContext from '../AudioPlayerContext';
 import TNTRQRCODE from '../TNTRQRCODE.png';
 
 const EpisodeData = ({ isMobile }) => {
   const { currentEpisode, elapsedTime, setRadioPlaying } = useContext(AudioPlayerContext);
+  const [imageDataUrl, setImageDataUrl] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (currentEpisode && currentEpisode.cover) {
+      const fetchImageData = async (imageUrl) => {
+        try {
+          const response = await fetch(imageUrl, {
+            headers: {
+              Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
+            }
+          });
+          if (response.ok) {
+            const blob = await response.blob();
+            const dataUrl = URL.createObjectURL(blob);
+            setImageDataUrl(dataUrl);
+          } else {
+            throw new Error('Failed to fetch image');
+          }
+        } catch (error) {
+          setError(error);
+        }
+      };
+
+      fetchImageData(currentEpisode.cover);
+    } else {
+      setImageDataUrl(null);
+    }
+  }, [currentEpisode]);
 
   const formatTime = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 3600);
@@ -34,7 +63,7 @@ const EpisodeData = ({ isMobile }) => {
   return (
     <div className={isMobile ? 'metadata-mobile' : 'metadata'}>
       <div 
-        className={isMobile ? 'playlist' : 'playlist'}
+        className={isMobile ? 'playlist-mobile' : 'playlist'}
         data-source="https://radio.tirnatek.fr/listen/tntr/tntr128.mp3" 
         onClick={handleButtonClick}
       >
@@ -44,16 +73,17 @@ const EpisodeData = ({ isMobile }) => {
       <h3>{currentEpisode.author || '. . .'}</h3>
       <p>{formatTime(elapsedTime)} / {formatTime(currentEpisode.media.length)}</p>
       <div className={isMobile ? 'custom-progress-mobile' : 'custom-progress'}>
-        <div id="progress-bar" style={{ width: `${(elapsedTime / currentEpisode.length) * 100}%` }}></div>
+        <div id="progress-bar" style={{ width: `${(elapsedTime / currentEpisode.media.length) * 100}%` }}></div>
       </div>
       <div>
         <img
-          src={currentEpisode.cover || TNTRQRCODE}
+          src={imageDataUrl || TNTRQRCODE}
           id={isMobile ? 'cover-np-song-mobile' : 'cover-np-song'}
           alt="cover"
           onError={(e) => { e.target.src = TNTRQRCODE }}
         />
       </div>
+      {error && <p className="error">{error.message}</p>}
     </div>
   );
 };

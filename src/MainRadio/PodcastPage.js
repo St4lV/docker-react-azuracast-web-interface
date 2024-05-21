@@ -108,7 +108,6 @@ const PodcastPage = ({ isMobile }) => {
           <Episode key={episode.id} episodeId={episode.id} podcastId={id} isMobile={isMobile}/>
         ))}
       </div>
-      <EpisodeData/>
     </>
   );
 };

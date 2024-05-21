@@ -63,7 +63,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
           const dataUrl = URL.createObjectURL(blob);
           setSelectedMediaUrl(dataUrl);
         } else {
-          throw new Error('Failed to fetch media link');
+          throw new Error('Echec du chargement de la ressource.');
         }
       } catch (error) {
         setError(error);
@@ -81,12 +81,27 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
   };
 
   if (error) {
-    return <div>Error fetching data: {error.message}</div>;
+    return <div>Recharger la page : {error.message}</div>;
   }
 
   if (!episode) {
     return <div>Loading...</div>;
   }
+
+  const formatTime = (timeInSeconds) => {
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor((timeInSeconds % 3600) / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+    if (hours > 0) {
+      return `${hours}h${formattedMinutes}m`;
+    }
+    
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
 
   return (
     <div className={isMobile ? 'm-episode' : 'episode'}>
@@ -98,7 +113,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
         onError={(e) => { e.target.src = TNTRQRCODE }}
       />
       <div className={isMobile ? 'm-episode-desc' : 'episode-desc'}>
-        <p>{episode.description || 'No description available'}</p>
+        <p>{formatTime(episode.media.length)} - {episode.description || 'No description available'}</p>
       </div>
       <button onClick={handlePlayClick} disabled={!selectedMediaUrl}>
         {!selectedMediaUrl ? 'Chargement ...' : 'Lancer'}
