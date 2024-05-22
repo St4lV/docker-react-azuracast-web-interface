@@ -4,7 +4,7 @@ import AudioPlayerContext from '../AudioPlayerContext';
 import TNTRQRCODE from '../TNTRQRCODE.png';
 
 const EpisodeData = ({ isMobile }) => {
-  const { currentEpisode, elapsedTime, setRadioPlaying, podcastId } = useContext(AudioPlayerContext);
+  const { currentEpisode, elapsedTime, setRadioPlaying, podcastId, audioElementRef, setElapsedTime } = useContext(AudioPlayerContext);
   const [episode, setEpisode] = useState(null);
   const [podcast, setPodcast] = useState(null); 
   const [imageDataUrl, setImageDataUrl] = useState(null);
@@ -73,6 +73,20 @@ const EpisodeData = ({ isMobile }) => {
     }
   }, [currentEpisode, podcastId]);
 
+  useEffect(() => {
+    const audioElement = audioElementRef.current;
+
+    const handleTimeUpdate = () => {
+      setElapsedTime(audioElement.currentTime);
+    };
+
+    audioElement.addEventListener('timeupdate', handleTimeUpdate);
+
+    return () => {
+      audioElement.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, [audioElementRef, setElapsedTime]);
+
   const formatTime = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
@@ -99,6 +113,18 @@ const EpisodeData = ({ isMobile }) => {
     setRadioPlaying(true);
   };
 
+  const handleProgressBarClick = (event) => {
+    const progressBar = event.target;
+    const rect = progressBar.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const totalWidth = rect.width;
+    const clickPositionPercentage = offsetX / totalWidth;
+    const newElapsedTime = clickPositionPercentage * currentEpisode.media.length;
+    
+    audioElementRef.current.currentTime = newElapsedTime;
+    setElapsedTime(newElapsedTime);
+  };
+
   const urlEncodedTitle = podcast ? encodeURIComponent(podcast.title.replace(/\s+/g, '_')) : '';
 
   return (
@@ -117,8 +143,12 @@ const EpisodeData = ({ isMobile }) => {
         </Link>
       )}
       <p>{formatTime(elapsedTime)} / {formatTime(currentEpisode.media.length)}</p>
-      <div className={isMobile ? 'custom-progress-mobile' : 'custom-progress'}>
-        <div id="progress-bar" style={{ width: `${(elapsedTime / currentEpisode.media.length) * 100}%` }}></div>
+      <div
+        className={isMobile ? 'custom-progress-mobile' : 'custom-progress'}
+        onClick={handleProgressBarClick}
+        style={{ cursor: 'pointer' }}
+      >
+        <div id="progress-bar" style={{ width: `${(elapsedTime / currentEpisode.media.length) * 100}%`, height: '100%' }}></div>
       </div>
       <div>
         <img

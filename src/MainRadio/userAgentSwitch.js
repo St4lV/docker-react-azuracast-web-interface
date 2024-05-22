@@ -51,7 +51,7 @@ const UserAgent = () => {
               <>
                 <PodcastPage isMobile={isMobile} />
                 <div className={isMobile ? 'm-p-endpage' : 'p-endpage'}>
-                  <Endpage />
+                  <Endpage isMobile={isMobile} />
                 </div>
               </>
             }

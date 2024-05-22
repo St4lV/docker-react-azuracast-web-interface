@@ -7,7 +7,7 @@ export const AudioPlayerProvider = ({ children }) => {
   const [isRadioPlaying, setIsRadioPlaying] = useState(true);
   const [currentEpisode, setCurrentEpisode] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
-  const [podcastId, setPodcastId] = useState(null); // Add podcastId state
+  const [podcastId, setPodcastId] = useState(null);
   const audioElementRef = useRef(null);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export const AudioPlayerProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
-  const play = (source, episode = null, podcastId = null) => { // Accept podcastId
+  const play = (source, episode = null, podcastId = null) => {
     if (audioElementRef.current.src !== source) {
       audioElementRef.current.src = source;
     }
@@ -51,7 +51,10 @@ export const AudioPlayerProvider = ({ children }) => {
   };
 
   return (
-    <AudioPlayerContext.Provider value={{ isPlaying, play, pause, currentEpisode, elapsedTime, isRadioPlaying, setRadioPlaying, audioElementRef, podcastId }}>
+    <AudioPlayerContext.Provider value={{ 
+      isPlaying, play, pause, currentEpisode, elapsedTime, 
+      isRadioPlaying, setRadioPlaying, audioElementRef, 
+      podcastId, setElapsedTime }}>
       {children}
     </AudioPlayerContext.Provider>
   );

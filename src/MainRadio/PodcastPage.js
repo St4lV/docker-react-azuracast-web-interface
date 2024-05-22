@@ -1,50 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Episode from './Podcasts/Episode';
-import TNTRQRCODE from './TNTRQRCODE.png'
-import EpisodeData from './Podcasts/EpisodeData';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDiscord, faFacebook, faInstagram ,faSoundcloud, faSpotify, faDeezer, faApple, faTiktok, faXTwitter, faYoutube} from '@fortawesome/free-brands-svg-icons';
+import { faShareFromSquare, faLink } from '@fortawesome/free-solid-svg-icons';
+import TNTRQRCODE from './TNTRQRCODE.png';
 
 const PodcastPage = ({ isMobile }) => {
   const { urlEncodedTitle } = useParams();
-  const location = useLocation();
-  const { id } = location.state || {};
+  const navigate = useNavigate();
   const [podcastData, setPodcastData] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
   const [episodes, setEpisodes] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) {
-      setError(new Error('Podcast ID is missing'));
-      return;
-    }
-
-    const fetchPodcastData = async () => {
+    const fetchPodcasts = async () => {
       try {
-        const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${id}`, {
+        const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcasts`, {
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
-          }
+            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+          },
         });
         if (!response.ok) {
           throw new Error(`Network response was not ok: ${response.statusText}`);
         }
         const data = await response.json();
-        setPodcastData(data);
-        if (data.art) {
-          fetchImageData(data.art);
+        const decodedTitle = decodeURIComponent(urlEncodedTitle.replace(/_/g, ' ')); // Decode and replace underscores with spaces
+        const podcast = data.find(p => p.title === decodedTitle);
+        if (!podcast) {
+          navigate('/sets'); // Redirect if podcast not found
+          return;
+        }
+        setPodcastData(podcast);
+        fetchEpisodes(podcast.id);
+        if (podcast.art) {
+          fetchImageData(podcast.art);
         }
       } catch (error) {
         setError(error);
+        navigate('/sets'); // Redirect on error
+      } finally {
+        setLoading(false);
       }
     };
 
-    const fetchEpisodes = async () => {
+    const fetchEpisodes = async (podcastId) => {
       try {
-        const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${id}/episodes`, {
+        const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${podcastId}/episodes`, {
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
-          }
+            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+          },
         });
         if (!response.ok) {
           throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -53,6 +60,7 @@ const PodcastPage = ({ isMobile }) => {
         setEpisodes(data);
       } catch (error) {
         setError(error);
+        navigate('/sets'); // Redirect on error
       }
     };
 
@@ -60,8 +68,8 @@ const PodcastPage = ({ isMobile }) => {
       try {
         const response = await fetch(imageUrl, {
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
-          }
+            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+          },
         });
         if (response.ok) {
           const blob = await response.blob();
@@ -72,19 +80,87 @@ const PodcastPage = ({ isMobile }) => {
         }
       } catch (error) {
         setError(error);
+        navigate('/sets'); // Redirect on error
       }
     };
 
-    fetchPodcastData();
-    fetchEpisodes();
-  }, [id]);
+    if (urlEncodedTitle) {
+      fetchPodcasts();
+    }
+  }, [urlEncodedTitle, navigate]);
+
+  const copyToClipboard = (text) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text)
+        .then(() => alert('Link copied to clipboard!'))
+        .catch(err => alert('Failed to copy text: ', err));
+    } else {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed'; // Prevent scrolling to bottom of the page in MS Edge
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+  
+      try {
+        const successful = document.execCommand('copy');
+        const msg = successful ? 'Link copied to clipboard!' : 'Failed to copy text';
+        alert(msg);
+      } catch (err) {
+        alert('Failed to copy text: ', err);
+      }
+  
+      document.body.removeChild(textarea);
+    }
+  };
+
+  const renderLinks = (linksString) => {
+    const urlPattern = /https?:\/\/[^\s]+/g;
+    const links = linksString.match(urlPattern) || [];
+    return links.map((link) => {
+      let icon;
+      if (link.includes('discord.com')|| link.includes('discord.gg')) {
+        icon = faDiscord;
+      } else if (link.includes('facebook.com')) {
+        icon = faFacebook;
+      } else if (link.includes('instagram.com')) {
+        icon = faInstagram;
+      } else if (link.includes('soundcloud.com')) {
+        icon = faSoundcloud;
+      } else if (link.includes('tiktok.com')) {
+        icon = faTiktok;
+      } else if (link.includes('twitter.com') || link.includes('x.com')) {
+        icon = faXTwitter;
+      } else if (link.includes('youtube.com')) {
+        icon = faYoutube;
+      } else if (link.includes('spotify.com')) {
+        icon = faSpotify;
+      } else if (link.includes('deezer.com')) {
+        icon = faDeezer;
+      } else if (link.includes('music.apple.com')) {
+        icon = faApple;
+      } else {
+        icon = faLink;
+      }
+      return (
+        <a href={link} target="_blank" rel="noopener noreferrer" className='link' key={link}>
+          <FontAwesomeIcon icon={icon} className={isMobile ? 'm-artist-page-icons' : 'artist-page-icons'} />
+        </a>
+      );
+    });
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (error) {
     return <div>Error fetching data: {error.message}</div>;
   }
 
   if (!podcastData || !episodes) {
-    return <div>Loading...</div>;
+    return <div>Podcast not found</div>;
   }
 
   return (
@@ -100,13 +176,22 @@ const PodcastPage = ({ isMobile }) => {
         />
         <div className={isMobile ? 'm-artist-desc-page' : 'artist-desc-page'}>
           <h2>Description:</h2>
-          <p>{podcastData.description || "Non spécifié"}</p>
-  
+          <p>{podcastData.description || 'Non spécifié'}</p>
+          <div>
+            <p>
+              <FontAwesomeIcon
+                icon={faShareFromSquare}
+                className={isMobile ? 'm-artist-page-icons' : 'artist-page-icons'}
+                onClick={() => copyToClipboard(podcastData.link)}
+              />
+              {renderLinks(podcastData.branding_config.public_custom_html)}
+            </p>
+          </div>
         </div>
       </div>
       <div className="episodes-list">
-        {episodes.map(episode => (
-          <Episode key={episode.id} episodeId={episode.id} podcastId={id} isMobile={isMobile}/>
+        {episodes.map((episode) => (
+          <Episode key={episode.id} episodeId={episode.id} podcastId={podcastData.id} isMobile={isMobile} />
         ))}
       </div>
     </>
