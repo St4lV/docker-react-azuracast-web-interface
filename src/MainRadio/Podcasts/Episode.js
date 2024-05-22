@@ -76,7 +76,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
 
   const handlePlayClick = () => {
     pause();
-    play(selectedMediaUrl, episode);
+    play(selectedMediaUrl, episode, podcastId); // Pass podcastId here
     setRadioPlaying(false);
   };
 
@@ -99,7 +99,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
     if (hours > 0) {
       return `${hours}h${formattedMinutes}m`;
     }
-    
+
     return `${formattedMinutes}:${formattedSeconds}`;
   };
 

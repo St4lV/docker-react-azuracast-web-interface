@@ -101,6 +101,7 @@ const PodcastPage = ({ isMobile }) => {
         <div className={isMobile ? 'm-artist-desc-page' : 'artist-desc-page'}>
           <h2>Description:</h2>
           <p>{podcastData.description || "Non spécifié"}</p>
+  
         </div>
       </div>
       <div className="episodes-list">

@@ -1,14 +1,37 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AudioPlayerContext from '../AudioPlayerContext';
 import TNTRQRCODE from '../TNTRQRCODE.png';
 
 const EpisodeData = ({ isMobile }) => {
-  const { currentEpisode, elapsedTime, setRadioPlaying } = useContext(AudioPlayerContext);
+  const { currentEpisode, elapsedTime, setRadioPlaying, podcastId } = useContext(AudioPlayerContext);
+  const [episode, setEpisode] = useState(null);
+  const [podcast, setPodcast] = useState(null); 
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (currentEpisode && currentEpisode.cover) {
+    if (podcastId && currentEpisode) {
+      const fetchEpisodeData = async () => {
+        try {
+          const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${podcastId}/episode/${currentEpisode.id}`, {
+            headers: {
+              Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
+            }
+          });
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+          }
+          const data = await response.json();
+          setEpisode(data);
+          if (data.art) {
+            fetchImageData(data.art);
+          }
+        } catch (error) {
+          setError(error);
+        }
+      };
+
       const fetchImageData = async (imageUrl) => {
         try {
           const response = await fetch(imageUrl, {
@@ -28,11 +51,27 @@ const EpisodeData = ({ isMobile }) => {
         }
       };
 
-      fetchImageData(currentEpisode.cover);
-    } else {
-      setImageDataUrl(null);
+      const fetchPodcastData = async () => {
+        try {
+          const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${podcastId}`, {
+            headers: {
+              Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
+            }
+          });
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+          }
+          const data = await response.json();
+          setPodcast(data);
+        } catch (error) {
+          setError(error);
+        }
+      };
+
+      fetchEpisodeData();
+      fetchPodcastData();
     }
-  }, [currentEpisode]);
+  }, [currentEpisode, podcastId]);
 
   const formatTime = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 3600);
@@ -60,6 +99,8 @@ const EpisodeData = ({ isMobile }) => {
     setRadioPlaying(true);
   };
 
+  const urlEncodedTitle = podcast ? encodeURIComponent(podcast.title.replace(/\s+/g, '_')) : '';
+
   return (
     <div className={isMobile ? 'metadata-mobile' : 'metadata'}>
       <div 
@@ -69,8 +110,12 @@ const EpisodeData = ({ isMobile }) => {
       >
         REVENIR À LA DIFFUSION
       </div>
-      <h3>{currentEpisode.title || '. . .'}</h3>
-      <h3>{currentEpisode.author || '. . .'}</h3>
+      {podcast && (
+        <Link to={`/sets/${urlEncodedTitle}`} state={{ id: podcast.id }} className="link">
+          <h3>{currentEpisode.title || '. . .'}</h3>
+          <h3>{podcast.author || '. . .'}</h3>
+        </Link>
+      )}
       <p>{formatTime(elapsedTime)} / {formatTime(currentEpisode.media.length)}</p>
       <div className={isMobile ? 'custom-progress-mobile' : 'custom-progress'}>
         <div id="progress-bar" style={{ width: `${(elapsedTime / currentEpisode.media.length) * 100}%` }}></div>
