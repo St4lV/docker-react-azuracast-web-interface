@@ -1,4 +1,6 @@
 import React from 'react';
+import './MainRadio/PodcastsMain.css';
+import './MainRadio/Podcasts/Artist.css';
 import './App.css';
 import UserAgent from './MainRadio/userAgentSwitch';
 

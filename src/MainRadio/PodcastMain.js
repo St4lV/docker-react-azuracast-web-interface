@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import usePodcasts from './Podcasts/usePodcasts';
 import Podcast from './Podcasts/Podcast';
-import './PodcastsMain.css';
 
 const PodcastMain = ({ isMobile }) => {
   const { podcasts, loading, error } = usePodcasts();

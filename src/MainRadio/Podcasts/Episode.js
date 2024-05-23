@@ -6,7 +6,6 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
   const [episode, setEpisode] = useState(null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
-  const [selectedMediaUrl, setSelectedMediaUrl] = useState(null);
   const { play, pause, setRadioPlaying } = useContext(AudioPlayerContext);
 
   useEffect(() => {
@@ -49,34 +48,12 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
       }
     };
 
-    const fetchMediaLink = async () => {
-      try {
-        const response = await fetch(`https://radio.tirnatek.fr/api/station/tntr/public/podcast/${podcastId}/episode/${episodeId}/download.mp3?refresh=0`, {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-            'Content-Type': 'audio/mpeg',
-            'Accept-Encoding': 'gzip'
-          }
-        });
-        if (response.ok) {
-          const blob = await response.blob();
-          const dataUrl = URL.createObjectURL(blob);
-          setSelectedMediaUrl(dataUrl);
-        } else {
-          throw new Error('Echec du chargement de la ressource.');
-        }
-      } catch (error) {
-        setError(error);
-      }
-    };
-
     fetchEpisodeData();
-    fetchMediaLink();
   }, [episodeId, podcastId]);
 
   const handlePlayClick = () => {
     pause();
-    play(selectedMediaUrl, episode, podcastId); // Pass podcastId here
+    play(`https://radio.tirnatek.fr/api/station/tntr/public/podcast/${podcastId}/episode/${episodeId}/download.mp3?refresh=0`, episode, podcastId);
     setRadioPlaying(false);
   };
 
@@ -88,6 +65,13 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
     return <div>Loading...</div>;
   }
 
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp * 1000);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
   const formatTime = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
@@ -104,7 +88,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
   };
 
   return (
-    <div className={isMobile ? 'm-episode' : 'episode'}>
+    <div className={isMobile ? 'm-episode' : 'episode'}onClick={handlePlayClick}>
       <h2 id={isMobile ? 'm-episode-title' : 'episode-title'}>{episode.title}</h2>
       <img
         src={imageDataUrl || TNTRQRCODE}
@@ -112,12 +96,11 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
         className={isMobile ? 'm-episode-art' : 'episode-art'}
         onError={(e) => { e.target.src = TNTRQRCODE }}
       />
+      <p></p>
       <div className={isMobile ? 'm-episode-desc' : 'episode-desc'}>
-        <p>{formatTime(episode.media.length)} - {episode.description || 'No description available'}</p>
+        <p>{formatDate(episode.publish_at)} - {formatTime(episode.media.length)}</p>
+        <p>{episode.description || 'No description available'}</p>
       </div>
-      <button onClick={handlePlayClick} disabled={!selectedMediaUrl}>
-        {!selectedMediaUrl ? 'Chargement ...' : 'Lancer'}
-      </button>
     </div>
   );
 };

@@ -1,43 +1,52 @@
 .artist-comp {
-    background-color: #0000009f;
-    width: 155px;
-    margin: 5px;
-    padding: 10px;
-    text-align: center;
-    /* Center the content vertically and horizontally */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5%;
-  }
-  
-.m-artist-comp{
-    background-color: #0000009f;
-    max-width: 110px;
-    width: 110px;
-    margin: 5px;
-    padding: -5%;
-    text-align: center;
-    display:grid;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.6em;
-    border-radius: 5%;
-}; 
-.artist-comp-content {
-    font-size: 15px;
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
+  background-color: #0000009f;
+  width: 155px;
+  margin: 5px;
+  padding: 10px;
+  text-align: left;
+  display: grid;
+  grid-template-rows: auto auto;
+  flex-direction: column;
+  justify-items: start;
+  border-radius: 5%;
+  font-size: 0.7em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: inherit;
 }
-.m-artist-comp-content{
-    font-size: 1em;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-};  
+
+.m-artist-comp {
+  background-color: #0000009f;
+  width: 165px;
+  margin: 5px;
+  padding: 1px;
+  text-align: left;
+  display: grid;
+  grid-template-rows: auto auto;
+  flex-direction: column;
+  text-justify: start;
+  justify-content: center;
+  border-radius: 5%;
+  font-size: 0.6em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: inherit;
+}
+
+.artist-comp-content {
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.m-artist-comp-content {
+  font-size: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .artist-desc{
     margin-left: 45px;
 }
@@ -143,10 +152,12 @@
   margin-bottom: 100px;
 }
 .episode-art{
+  position: absolute;
+  top:69px;
   border-radius: 10%;
   width: 200px;
   height: 200px;
-  margin-left: 30px;
+  margin-left: 25px;
 
 }
 .episode{
@@ -161,10 +172,12 @@
   border-radius: 5%;
 }
 .m-episode-art{
+  position: absolute;
   border-radius: 10%;
   width: 100px;
   height: 100px;
-  margin-left: 10px;
+  margin-left: 11px;
+  top:40px;
 
 }
 .m-episode{
@@ -172,21 +185,30 @@
   display: flex;
   flex-direction: column;
   margin-left:10px;
+  margin-bottom: 10px;
   top:300px;
   width: 90%;
   background-color: #0000005d;
+  border-radius: 4%;
+}
+.episode-timedata{
+  position: absolute;
+  top:250px;
+  left: 35px;
 }
 .episode-desc{
-  margin-left: 250px;
+  min-height: 220px;
+  left: 255px;
   position: relative;
-  bottom: 200px;
-  max-width: fit-content;
+  max-width: 65%;
+  top:-50px;
 }
 .m-episode-desc{
-  margin-left: 120px;
+  min-height: 80px;
+  left: 120px;
   position: relative;
-  bottom: 110px;
-  max-width: fit-content;
+  max-width: 60%;
+  top:-40px;
   font-size: 0.6em;
 }
 #episode-title{
@@ -204,7 +226,7 @@
 .m-p-search-bar{
   position: absolute;
   left:175px;
-  top:140px;
+  top:110px;
 }
 .artist-page-icons{
   font-size: 2em;
@@ -213,4 +235,7 @@
 .m-artist-page-icons{
   font-size: 2em;
   margin-right: 15px;
+}
+.m-p-endpage-dj-set{
+  font-size: 0.6em;
 }

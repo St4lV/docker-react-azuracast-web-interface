@@ -41,7 +41,9 @@ const UserAgent = () => {
             element={
               <>
                 <PodcastMain isMobile={isMobile} />
-                <Endpage isMobile={isMobile} />
+                <div className={isMobile ? 'm-p-endpage-dj-set' : 'p-endpage-dj-set'}>
+                  <Endpage isMobile={isMobile} />
+                </div>
               </>
             }
           />

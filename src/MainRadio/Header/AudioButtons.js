@@ -16,6 +16,8 @@ function AudioButtons({ isMobile }) {
   function handleButtonClick(event) {
     const source = event.target.getAttribute('data-source');
     const audioElement = document.getElementById('lecteurAudio');
+    audioElement.pause();
+    audioElement.removeAttribute('src')
     audioElement.setAttribute('src', source);
     audioElement.load();
     audioElement.play();

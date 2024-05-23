@@ -94,7 +94,7 @@ body::-webkit-scrollbar {
   width: 0px;
   transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, width 0.7s ease-in-out;
   height: 100%;
-  background-image: linear-gradient(to right, #000000, #0000009f);
+  background-image: linear-gradient(to right, #0000009f, #000000f1);
 }
 
 .main-menu.open {
@@ -111,13 +111,13 @@ body::-webkit-scrollbar {
   width: 0px;
   transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, width 0.5s ease-in-out;
   height: 100%;
-  background-image: linear-gradient(to left, #000000, #0000009f);
+  background-image: linear-gradient(to left, #0000009f, #000000f1);
 }
 
 .main-menu-mobile.open {
   opacity: 1;
   visibility: visible;
-  width: 80%;
+  width: 70%;
 }
 
 .dropdown-content {
@@ -568,35 +568,21 @@ th, td {
   scrollbar-width: none;
   transition: opacity 0.5s ease-in-out, visibility 0.2s ease-in-out;
 }
-/* Styles pour la section "Now Playing" */
-
 .song-history-entry {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
-
-/* Styles pour les détails de la chanson */
-
 .song-details {
   margin-left: 15px;
 }
-
-/* Styles pour le titre de la chanson */
-
 .song-title {
   font-weight: bold;
   margin-bottom: 5px;
 }
-
-/* Styles pour l'artiste de la chanson */
-
 .song-artist {
   font-style: italic;
 }
-
-/* Styles pour les images */
-
 .img-history {
   width: 150px;
   height: 150px;
