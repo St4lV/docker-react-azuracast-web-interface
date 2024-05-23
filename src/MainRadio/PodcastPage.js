@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Episode from './Podcasts/Episode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDiscord, faFacebook, faInstagram ,faSoundcloud, faSpotify, faDeezer, faApple, faTiktok, faXTwitter, faYoutube} from '@fortawesome/free-brands-svg-icons';
+import { faDiscord, faFacebook, faInstagram ,faSoundcloud, faSpotify, faDeezer, faApple, faTiktok, faXTwitter, faYoutube, faBandcamp} from '@fortawesome/free-brands-svg-icons';
 import { faShareFromSquare, faLink } from '@fortawesome/free-solid-svg-icons';
 import TNTRQRCODE from './TNTRQRCODE.png';
 
@@ -140,6 +140,8 @@ const PodcastPage = ({ isMobile }) => {
         icon = faDeezer;
       } else if (link.includes('music.apple.com')) {
         icon = faApple;
+      } else if (link.includes('bandcamp.com')) {
+        icon = faBandcamp;
       } else {
         icon = faLink;
       }
