@@ -17,22 +17,34 @@
 
 .m-artist-comp {
   background-color: #0000009f;
-  width: 165px;
-  margin: 5px;
-  padding: 1px;
+  width: 105px;
+  margin: 2px;
   text-align: left;
   display: grid;
   grid-template-rows: auto auto;
   flex-direction: column;
   text-justify: start;
-  justify-content: center;
   border-radius: 5%;
-  font-size: 0.6em;
+  font-size: 0.45em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: inherit;
 }
-
+.m-artist-comp-mp{
+  background-color: #0000009f;
+  width: 140px;
+  margin: 2px;
+  text-align: center;
+  display: grid;
+  grid-template-rows: auto auto;
+  flex-direction: column;
+  text-justify: start;
+  border-radius: 5%;
+  font-size: 0.7em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: inherit;
+}
 .artist-comp-content {
   font-size: 15px;
   display: flex;

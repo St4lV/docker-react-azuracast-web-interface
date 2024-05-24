@@ -133,6 +133,7 @@ const EpisodeData = ({ isMobile }) => {
         className={isMobile ? 'playlist-mobile' : 'playlist'}
         data-source="https://radio.tirnatek.fr/listen/tntr/tntr128.mp3" 
         onClick={handleButtonClick}
+        style={{ cursor: 'pointer' }}
       >
         REVENIR À LA DIFFUSION
       </div>

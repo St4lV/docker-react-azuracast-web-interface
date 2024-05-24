@@ -23,3 +23,19 @@
     flex-wrap: wrap;
     justify-content: space-between;
 }
+.main-djsets-mp {
+  position: relative;
+  top: 0px;
+  left:5%;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.m-main-djsets-mp {
+    position: relative;
+    top: 0px;
+    right:5%;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

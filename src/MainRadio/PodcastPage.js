@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Episode from './Podcasts/Episode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDiscord, faFacebook, faInstagram ,faSoundcloud, faSpotify, faDeezer, faApple, faTiktok, faXTwitter, faYoutube, faBandcamp} from '@fortawesome/free-brands-svg-icons';
+import { faDiscord, faFacebook, faInstagram, faSoundcloud, faSpotify, faDeezer, faApple, faTiktok, faXTwitter, faYoutube, faBandcamp } from '@fortawesome/free-brands-svg-icons';
 import { faShareFromSquare, faLink } from '@fortawesome/free-solid-svg-icons';
 import TNTRQRCODE from './TNTRQRCODE.png';
 
@@ -14,6 +14,7 @@ const PodcastPage = ({ isMobile }) => {
   const [error, setError] = useState(null);
   const [episodes, setEpisodes] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const fetchPodcasts = async () => {
@@ -92,23 +93,25 @@ const PodcastPage = ({ isMobile }) => {
   const copyToClipboard = (text) => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text)
-        .then(() => alert('Link copied to clipboard!'))
-        .catch(err => alert('Failed to copy text: ', err));
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch(err => console.error('Failed to copy text: ', err));
     } else {
-      // Fallback for older browsers
       const textarea = document.createElement('textarea');
       textarea.value = text;
-      textarea.style.position = 'fixed'; // Prevent scrolling to bottom of the page in MS Edge
+      textarea.style.position = 'fixed';
       document.body.appendChild(textarea);
       textarea.focus();
       textarea.select();
   
       try {
         const successful = document.execCommand('copy');
-        const msg = successful ? 'Link copied to clipboard!' : 'Failed to copy text';
-        alert(msg);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
       } catch (err) {
-        alert('Failed to copy text: ', err);
+        console.error('Failed to copy text: ', err);
       }
   
       document.body.removeChild(textarea);
@@ -120,7 +123,7 @@ const PodcastPage = ({ isMobile }) => {
     const links = linksString.match(urlPattern) || [];
     return links.map((link) => {
       let icon;
-      if (link.includes('discord.com')|| link.includes('discord.gg')) {
+      if (link.includes('discord.com') || link.includes('discord.gg')) {
         icon = faDiscord;
       } else if (link.includes('facebook.com')) {
         icon = faFacebook;
@@ -185,12 +188,16 @@ const PodcastPage = ({ isMobile }) => {
                 icon={faShareFromSquare}
                 className={isMobile ? 'm-artist-page-icons' : 'artist-page-icons'}
                 onClick={() => copyToClipboard(podcastData.link)}
+                style={{ cursor: 'pointer' }}
               />
               {renderLinks(podcastData.branding_config.public_custom_html)}
             </p>
           </div>
         </div>
       </div>
+      {copied && <div style={isMobile ? { display: 'none' } : { position: 'fixed', bottom: '160px', fontSize: '0.8em', color: 'green', textAlign: 'center'}}>
+        Link copied to clipboard!
+      </div>}
       <div className="episodes-list">
         {episodes.map((episode) => (
           <Episode key={episode.id} episodeId={episode.id} podcastId={podcastData.id} isMobile={isMobile} />

@@ -2,14 +2,22 @@ import React, { useState, useEffect, useContext } from 'react';
 import AudioPlayerContext from '../AudioPlayerContext';
 import TNTRQRCODE from '../TNTRQRCODE.png';
 
-const Episode = ({ episodeId, podcastId, isMobile }) => {
-  const [episode, setEpisode] = useState(null);
+const Episode = ({ episodeId, podcastId, episodeData, isMobile }) => {
+  const [episode, setEpisode] = useState(episodeData || null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
   const { play, pause, setRadioPlaying } = useContext(AudioPlayerContext);
 
   useEffect(() => {
     const fetchEpisodeData = async () => {
+      if (episodeData) {
+        setEpisode(episodeData);
+        if (episodeData.art) {
+          fetchImageData(episodeData.art);
+        }
+        return;
+      }
+
       try {
         const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${podcastId}/episode/${episodeId}`, {
           headers: {
@@ -49,7 +57,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
     };
 
     fetchEpisodeData();
-  }, [episodeId, podcastId]);
+  }, [episodeId, podcastId, episodeData]);
 
   const handlePlayClick = () => {
     pause();
@@ -72,6 +80,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   };
+
   const formatTime = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
@@ -88,7 +97,7 @@ const Episode = ({ episodeId, podcastId, isMobile }) => {
   };
 
   return (
-    <div className={isMobile ? 'm-episode' : 'episode'}onClick={handlePlayClick}>
+    <div className={isMobile ? 'm-episode' : 'episode'} onClick={handlePlayClick}>
       <h2 id={isMobile ? 'm-episode-title' : 'episode-title'}>{episode.title}</h2>
       <img
         src={imageDataUrl || TNTRQRCODE}

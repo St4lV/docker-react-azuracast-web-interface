@@ -138,7 +138,7 @@ body::-webkit-scrollbar {
   color: white;
   display: flex;
   position: fixed;
-  left: 6px;
+  left: 25px;
   top: 27px;
   gap: 3em;
 }
