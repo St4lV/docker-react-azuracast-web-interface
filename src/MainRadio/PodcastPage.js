@@ -175,13 +175,14 @@ const PodcastPage = ({ isMobile }) => {
       </h1>
       <div className={isMobile ? 'm-artist-comp-content-page' : 'artist-comp-content-page'}>
         <img
-          src={imageDataUrl}
-          alt={TNTRQRCODE}
+          src={imageDataUrl || TNTRQRCODE}
           id={isMobile ? 'm-artist-art-page' : 'artist-art-page'}
         />
         <div className={isMobile ? 'm-artist-desc-page' : 'artist-desc-page'}>
           <h2>Description:</h2>
-          <p>{podcastData.description || 'Non spécifié'}</p>
+          <p className={isMobile ? 'm-artist-desc-page-text' : ''}>
+            {podcastData.description || 'Non spécifié'}
+          </p>
           <div>
             <p>
               <FontAwesomeIcon

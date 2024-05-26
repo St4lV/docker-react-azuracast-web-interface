@@ -3,36 +3,14 @@ import { Link } from 'react-router-dom';
 import AudioPlayerContext from './AudioPlayerContext';
 import TNTRQRCODE from './TNTRQRCODE.png';
 
-const formatDate = (timestamp) => {
-  const date = new Date(timestamp * 1000);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-};
-
-const formatTime = (timeInSeconds) => {
-  const hours = Math.floor(timeInSeconds / 3600);
-  const minutes = Math.floor((timeInSeconds % 3600) / 60);
-  const seconds = Math.floor(timeInSeconds % 60);
-
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-
-  if (hours > 0) {
-    return `${hours}h${formattedMinutes}m`;
-  }
-
-  return `${formattedMinutes}:${formattedSeconds}`;
-};
-
-const EpisodeItem = ({ episode, podcast, isMobile, handlePlayClick }) => {
+const PodcastItem = ({ podcast, isMobile, handlePlayClick }) => {
+  const latestEpisode = podcast.episodes.length > 0 ? podcast.episodes[0] : null;
   const urlEncodedTitle = encodeURIComponent(podcast.title.replace(/\s+/g, '_'));
-  const imageDataUrl = episode.imageUrl || 'https://via.placeholder.com/100';
+  const imageDataUrl = podcast.podcastImageUrl;
 
   return (
-    <li key={episode.id} className={isMobile ? 'm-main-djsets-mp' : 'main-djsets-mp'}>
-      <div onClick={() => handlePlayClick(episode, podcast.id)} className="link" style={{ cursor: 'pointer' }}>
+    <li className={isMobile ? 'm-main-djsets-mp' : 'main-djsets-mp'}>
+      <Link to={`/sets/${urlEncodedTitle}`} state={{ id: podcast.id }} className="link">
         <div className={isMobile ? 'm-artist-comp-mp' : 'artist-comp-mp'}>
           <h2>{podcast.title || 'ARTIST'}</h2>
           <div className={isMobile ? 'm-artist-comp-content-mp' : 'artist-comp-content-mp'} style={{ fontSize: '0.95em' }}>
@@ -40,17 +18,20 @@ const EpisodeItem = ({ episode, podcast, isMobile, handlePlayClick }) => {
               src={imageDataUrl || TNTRQRCODE}
               className={isMobile ? 'm-artist-art' : 'artist-art'}
             />
-            <p>{episode.title}</p>
-            <p>{formatDate(episode.publish_at)} - {formatTime(episode.media.length)}</p>
+            {latestEpisode && (
+              <>
+                <p style={{ whiteSpace: 'wrap', maxHeight: '100px' }}>{podcast.description_short}</p>
+              </>
+            )}
           </div>
         </div>
-      </div>
+      </Link>
     </li>
   );
 };
 
-const LastReleases = ({ isMobile }) => {
-  const [recentEpisodes, setRecentEpisodes] = useState([]);
+const LastDJadd = ({ isMobile }) => {
+  const [recentPodcasts, setRecentPodcasts] = useState([]);
   const [error, setError] = useState(null);
   const { play, pause, setRadioPlaying } = useContext(AudioPlayerContext);
 
@@ -89,22 +70,22 @@ const LastReleases = ({ isMobile }) => {
     }
   };
 
-  const saveToCache = (episodes) => {
-    episodes.forEach((episode, index) => {
-      const episodeWithId = { ...episode, cacheId: index + 1 };
-      localStorage.setItem(`episode_${index + 1}`, JSON.stringify(episodeWithId));
+  const saveToCache = (podcasts) => {
+    podcasts.forEach((podcast, index) => {
+      const podcastWithId = { ...podcast, cacheId: index + 1 };
+      localStorage.setItem(`podcast_${index + 1}`, JSON.stringify(podcastWithId));
     });
   };
 
   const loadFromCache = () => {
-    const cachedEpisodes = [];
+    const cachedPodcasts = [];
     for (let i = 1; i <= 10; i++) {
-      const cachedEpisode = localStorage.getItem(`episode_${i}`);
-      if (cachedEpisode) {
-        cachedEpisodes.push(JSON.parse(cachedEpisode));
+      const cachedPodcast = localStorage.getItem(`podcast_${i}`);
+      if (cachedPodcast) {
+        cachedPodcasts.push(JSON.parse(cachedPodcast));
       }
     }
-    return cachedEpisodes;
+    return cachedPodcasts;
   };
 
   const fetchPodcastsAndEpisodes = async () => {
@@ -121,7 +102,7 @@ const LastReleases = ({ isMobile }) => {
 
       const podcasts = await response.json();
 
-      const episodesPromises = podcasts.map(async (podcast) => {
+      const podcastPromises = podcasts.map(async (podcast) => {
         const episodes = await fetchEpisodes(podcast.id);
         const episodesWithImages = await Promise.all(
           episodes.map(async (episode) => {
@@ -129,21 +110,28 @@ const LastReleases = ({ isMobile }) => {
             return { ...episode, podcast, imageUrl };
           })
         );
-        return episodesWithImages;
+        const earliestCreatedAt = episodesWithImages.length > 0
+          ? Math.min(...episodesWithImages.map(e => new Date(e.created_at).getTime()))
+          : null;
+
+        const podcastImageUrl = podcast.art ? await fetchImageData(podcast.art) : 'https://via.placeholder.com/100';
+
+        return { ...podcast, episodes: episodesWithImages, earliestCreatedAt, podcastImageUrl };
       });
 
-      const episodesArrays = await Promise.all(episodesPromises);
-      const allEpisodes = episodesArrays.flat();
+      const podcastsWithEpisodes = await Promise.all(podcastPromises);
 
-      // Sort episodes by publish date and get the latest 5
-      const sortedEpisodes = allEpisodes.sort((a, b) => new Date(b.publish_at) - new Date(a.publish_at));
-      const latestEpisodes = sortedEpisodes.slice(0, 10);
+      const podcastsSortedByEarliestEpisode = podcastsWithEpisodes
+        .filter(podcast => podcast.earliestCreatedAt !== null)
+        .sort((a, b) => b.earliestCreatedAt - a.earliestCreatedAt);
 
-      // Save the latest episodes to cache
-      saveToCache(latestEpisodes);
+      const latestPodcasts = podcastsSortedByEarliestEpisode.slice(0, 10);
 
-      // Set the state with the latest episodes
-      setRecentEpisodes(latestEpisodes);
+      // Save the latest podcasts to cache
+      saveToCache(latestPodcasts);
+
+      // Set the state with the latest podcasts
+      setRecentPodcasts(latestPodcasts);
     } catch (error) {
       setError(error);
     }
@@ -151,9 +139,9 @@ const LastReleases = ({ isMobile }) => {
 
   useEffect(() => {
     // Load data from cache on component mount
-    const cachedEpisodes = loadFromCache();
-    if (cachedEpisodes.length > 0) {
-      setRecentEpisodes(cachedEpisodes);
+    const cachedPodcasts = loadFromCache();
+    if (cachedPodcasts.length > 0) {
+      setRecentPodcasts(cachedPodcasts);
     }
 
     // Fetch data in the background and update cache and state if necessary
@@ -171,18 +159,17 @@ const LastReleases = ({ isMobile }) => {
   }
 
   return (
-    <div className={'last-release-mp'} style={{ position: 'relative', top: '10%', width: '80%', left: '6%' }}>
-      <h2 style={{ textAlign: 'center', position: 'relative', top: '5px', fontSize: '1.8em' }}>Derniers sets publiés:</h2>
+    <div className={'last-release-mp'} style={{ position: 'relative', top: '50px', width: '80%', left: '6%', marginBottom: '150px' }}>
+      <h2 style={{ textAlign: 'center', position: 'relative', top: '5px', fontSize: '1.8em' }}>Derniers DJs ajoutés:</h2>
       <div className={isMobile ? 'm-main-djsets-mp-container' : 'main-djsets-mp-container'}>
         <ul>
-          {recentEpisodes.length > 0 ? (
-            recentEpisodes.map((episode) => (
-              <EpisodeItem
-                key={episode.id}
-                episode={episode}
-                podcast={episode.podcast}
+          {recentPodcasts.length > 0 ? (
+            recentPodcasts.map((podcast) => (
+              <PodcastItem
+                key={podcast.id}
+                podcast={podcast}
                 isMobile={isMobile}
-                handlePlayClick={handlePlayClick}
+                handlePlayClick={(episode) => handlePlayClick(episode, podcast.id)}
               />
             ))
           ) : (
@@ -204,4 +191,4 @@ const LastReleases = ({ isMobile }) => {
   );
 };
 
-export default LastReleases;
+export default LastDJadd;

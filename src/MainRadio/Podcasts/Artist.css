@@ -30,20 +30,39 @@
   overflow: hidden;
   text-overflow: inherit;
 }
-.m-artist-comp-mp{
-  background-color: #0000009f;
-  width: 140px;
-  margin: 2px;
-  text-align: center;
+.artist-comp-mp {
+  border: 1px solid rgb(255, 255, 255);
+  background-color: #000000;
+  margin: 5px;
+  padding: 15px;
+  text-align: left;
   display: grid;
   grid-template-rows: auto auto;
   flex-direction: column;
-  text-justify: start;
+  justify-items: start;
   border-radius: 5%;
   font-size: 0.7em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: inherit;
+  width: 155px;
+}
+.m-artist-comp-mp{
+  border: 5px solid rgb(255, 255, 255);
+  background-color: #000000;
+  margin: 5px;
+  padding: 10px;
+  text-align: left;
+  display: grid;
+  grid-template-rows: auto auto;
+  flex-direction: column;
+  justify-items: start;
+  border-radius: 5%;
+  font-size: 0.7em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: inherit;
+  width: 100px;
 }
 .artist-comp-content {
   font-size: 15px;
@@ -114,13 +133,14 @@
   align-items: left;
   display: flex;
   flex-direction: column;
+  margin-bottom: 50px;
 }
 .m-artist-comp-content-page{
   background-color: #38227441;
   width: 100%;
   font-size: 0.7em;
   align-items: left;
-  margin-left: 120;
+  max-height: 100px;
 }
 .artist-desc-page{
   font-size: 1em;
@@ -134,6 +154,12 @@
   margin-top: 145px;
   position: absolute;
   margin-left: 120px;
+  margin-bottom: 20px;
+}
+.m-artist-desc-page-text{
+ max-height: 100px;
+  overflow-x: hidden; 
+  overflow-y: scroll;
 }
 #artist-art-page{
   position: absolute;
@@ -147,7 +173,7 @@
 #m-artist-art-page{
   position: absolute;
   left: 0px;
-  margin-top: 155px;
+  margin-top: 165px;
   margin-left: 5px;
   border-radius: 50%;
   width: 100px;
@@ -198,7 +224,7 @@
   flex-direction: column;
   margin-left:10px;
   margin-bottom: 10px;
-  top:300px;
+  top:350px;
   width: 90%;
   background-color: #0000005d;
   border-radius: 4%;
@@ -209,19 +235,23 @@
   left: 35px;
 }
 .episode-desc{
-  min-height: 220px;
+  height: 220px;
   left: 255px;
   position: relative;
   max-width: 65%;
   top:-50px;
+  overflow-x: hidden; 
+  overflow-y: scroll;
 }
 .m-episode-desc{
-  min-height: 80px;
+  height: 90px;
   left: 120px;
   position: relative;
   max-width: 60%;
   top:-40px;
   font-size: 0.6em;
+  overflow-x: hidden; 
+  overflow-y: scroll;
 }
 #episode-title{
   margin-left: 35px;

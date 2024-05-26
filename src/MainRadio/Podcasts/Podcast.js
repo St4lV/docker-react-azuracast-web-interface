@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import TNTRQRCODE from '../TNTRQRCODE.png'
 
 const Podcast = ({ podcast, isMobile }) => {
   const [imageDataUrl, setImageDataUrl] = useState(null);
@@ -45,7 +46,7 @@ const Podcast = ({ podcast, isMobile }) => {
         <h2>{podcast.title || 'ARTIST'}</h2>
         <div className={isMobile ? 'm-artist-comp-content' : 'artist-comp-content'}>
           <img
-            src={imageDataUrl || 'https://via.placeholder.com/100'}
+            src={imageDataUrl || TNTRQRCODE}
             alt={podcast.title || 'Podcast Art'}
             className={isMobile ? 'm-artist-art' : 'artist-art'}
           />

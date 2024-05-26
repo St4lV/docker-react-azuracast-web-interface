@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import AudioPlayer from './AudioPlayer';
-import LastReleases from './LastReleases';
 import Schedule from './Schedule';
+import LastReleases from './LastReleases';
+import LastDJadd from './LastDJadd';
 import Endpage from './EndPage';
 import PodcastMain from './PodcastMain';
 import PodcastPage from './PodcastPage';
@@ -32,6 +33,7 @@ const UserAgent = () => {
                   <div className={isMobile ? 'bg-centre-mobile' : 'bg-centre'}>
                     <Schedule isMobile={isMobile} />
                     <LastReleases isMobile={isMobile} />
+                    <LastDJadd isMobile={isMobile}/>
                     <Endpage isMobile={isMobile} />
 
                   </div>

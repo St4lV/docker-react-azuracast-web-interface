@@ -23,19 +23,43 @@
     flex-wrap: wrap;
     justify-content: space-between;
 }
+.last-release-mp{
+  background-image: linear-gradient(to top left, #0000008f, #000000f1);
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5%;
+}
+.main-djsets-mp-container{
+  overflow-x: scroll; 
+  overflow-y: hidden;
+  white-space: nowrap;
+  max-width: 95%;
+  margin-left:5%;
+  margin-right:5%;
+  max-height: 350px;
+}
+.m-main-djsets-mp-container{
+  overflow-x: scroll;
+  overflow-y: hidden; 
+  white-space: nowrap;
+  max-width: 95%;
+  max-height: 200px;
+  margin: 15px;
+
+}
 .main-djsets-mp {
   position: relative;
   top: 0px;
-  left:5%;
   display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  white-space: nowrap; 
 }
 .m-main-djsets-mp {
-    position: relative;
-    top: 0px;
-    right:5%;
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  position: relative;
+  top: 0px;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  white-space: nowrap; 
 }
