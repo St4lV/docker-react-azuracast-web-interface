@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import AudioPlayerContext from './AudioPlayerContext';
 import TNTRQRCODE from './TNTRQRCODE.png';
 
@@ -27,8 +26,7 @@ const formatTime = (timeInSeconds) => {
 };
 
 const EpisodeItem = ({ episode, podcast, isMobile, handlePlayClick }) => {
-  const urlEncodedTitle = encodeURIComponent(podcast.title.replace(/\s+/g, '_'));
-  const imageDataUrl = episode.imageUrl || 'https://via.placeholder.com/100';
+  const imageDataUrl = episode.imageDataUrl || TNTRQRCODE;
 
   return (
     <li key={episode.id} className={isMobile ? 'm-main-djsets-mp' : 'main-djsets-mp'}>
@@ -37,8 +35,9 @@ const EpisodeItem = ({ episode, podcast, isMobile, handlePlayClick }) => {
           <h2>{podcast.title || 'ARTIST'}</h2>
           <div className={isMobile ? 'm-artist-comp-content-mp' : 'artist-comp-content-mp'} style={{ fontSize: '0.95em' }}>
             <img
-              src={imageDataUrl || TNTRQRCODE}
+              src={imageDataUrl}
               className={isMobile ? 'm-artist-art' : 'artist-art'}
+              onError={(e) => { e.target.src = TNTRQRCODE; }}
             />
             <p>{episode.title}</p>
             <p>{formatDate(episode.publish_at)} - {formatTime(episode.media.length)}</p>
@@ -50,13 +49,13 @@ const EpisodeItem = ({ episode, podcast, isMobile, handlePlayClick }) => {
 };
 
 const LastReleases = ({ isMobile }) => {
-  const [recentEpisodes, setRecentEpisodes] = useState([]);
+  const [recentEpisodes, setRecentEpisodes] = useState(Array(10).fill(null));
   const [error, setError] = useState(null);
   const { play, pause, setRadioPlaying } = useContext(AudioPlayerContext);
 
-  const fetchEpisodes = async (podcastId) => {
+  const fetchEpisodes = async (podcast) => {
     try {
-      const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${podcastId}/episodes`, {
+      const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcast/${podcast.id}/episodes`, {
         headers: {
           Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
         },
@@ -65,9 +64,10 @@ const LastReleases = ({ isMobile }) => {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
       const data = await response.json();
-      return data;
+      return data.filter(episode => episode.is_published).map(episode => ({ ...episode, podcast }));
     } catch (error) {
       setError(error);
+      return [];
     }
   };
 
@@ -80,28 +80,35 @@ const LastReleases = ({ isMobile }) => {
       });
       if (response.ok) {
         const blob = await response.blob();
-        return URL.createObjectURL(blob);
+        const reader = new FileReader();
+        return new Promise((resolve, reject) => {
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
       } else {
         throw new Error('Failed to fetch image');
       }
     } catch (error) {
       setError(error);
+      return null;
     }
   };
 
   const saveToCache = (episodes) => {
     episodes.forEach((episode, index) => {
-      const episodeWithId = { ...episode, cacheId: index + 1 };
-      localStorage.setItem(`episode_${index + 1}`, JSON.stringify(episodeWithId));
+      localStorage.setItem(`episode_${index + 1}`, JSON.stringify(episode));
     });
   };
 
   const loadFromCache = () => {
     const cachedEpisodes = [];
-    for (let i = 1; i <= 10; i++) {
-      const cachedEpisode = localStorage.getItem(`episode_${i}`);
+    for (let i = 0; i < 10; i++) {
+      const cachedEpisode = localStorage.getItem(`episode_${i + 1}`);
       if (cachedEpisode) {
         cachedEpisodes.push(JSON.parse(cachedEpisode));
+      } else {
+        cachedEpisodes.push(null);
       }
     }
     return cachedEpisodes;
@@ -120,30 +127,25 @@ const LastReleases = ({ isMobile }) => {
       }
 
       const podcasts = await response.json();
-
-      const episodesPromises = podcasts.map(async (podcast) => {
-        const episodes = await fetchEpisodes(podcast.id);
-        const episodesWithImages = await Promise.all(
-          episodes.map(async (episode) => {
-            const imageUrl = await fetchImageData(episode.art);
-            return { ...episode, podcast, imageUrl };
-          })
-        );
-        return episodesWithImages;
-      });
-
+      const episodesPromises = podcasts.map(podcast => fetchEpisodes(podcast));
       const episodesArrays = await Promise.all(episodesPromises);
       const allEpisodes = episodesArrays.flat();
 
-      // Sort episodes by publish date and get the latest 5
       const sortedEpisodes = allEpisodes.sort((a, b) => new Date(b.publish_at) - new Date(a.publish_at));
       const latestEpisodes = sortedEpisodes.slice(0, 10);
 
-      // Save the latest episodes to cache
-      saveToCache(latestEpisodes);
+      // Fetch images for the latest episodes
+      const latestEpisodesWithImages = await Promise.all(
+        latestEpisodes.map(async (episode) => {
+          const imageDataUrl = episode.art ? await fetchImageData(episode.art) : TNTRQRCODE;
+          return { ...episode, imageDataUrl };
+        })
+      );
 
-      // Set the state with the latest episodes
-      setRecentEpisodes(latestEpisodes);
+      // Save the latest episodes with images to cache
+      saveToCache(latestEpisodesWithImages);
+
+      setRecentEpisodes(latestEpisodesWithImages);
     } catch (error) {
       setError(error);
     }
@@ -152,9 +154,7 @@ const LastReleases = ({ isMobile }) => {
   useEffect(() => {
     // Load data from cache on component mount
     const cachedEpisodes = loadFromCache();
-    if (cachedEpisodes.length > 0) {
-      setRecentEpisodes(cachedEpisodes);
-    }
+    setRecentEpisodes(cachedEpisodes);
 
     // Fetch data in the background and update cache and state if necessary
     fetchPodcastsAndEpisodes();
@@ -175,8 +175,8 @@ const LastReleases = ({ isMobile }) => {
       <h2 style={{ textAlign: 'center', position: 'relative', top: '5px', fontSize: '1.8em' }}>Derniers sets publiés:</h2>
       <div className={isMobile ? 'm-main-djsets-mp-container' : 'main-djsets-mp-container'}>
         <ul>
-          {recentEpisodes.length > 0 ? (
-            recentEpisodes.map((episode) => (
+          {recentEpisodes.map((episode, index) => (
+            episode ? (
               <EpisodeItem
                 key={episode.id}
                 episode={episode}
@@ -184,20 +184,21 @@ const LastReleases = ({ isMobile }) => {
                 isMobile={isMobile}
                 handlePlayClick={handlePlayClick}
               />
-            ))
-          ) : (
-            <li className={isMobile ? 'm-main-djsets-mp' : 'main-djsets-mp'}>
-              <div className="link" style={{ cursor: 'default' }}>
-                <div className={isMobile ? 'm-artist-comp-mp' : 'artist-comp-mp'}>
-                  <img
-                    src={TNTRQRCODE}
-                    className={isMobile ? 'm-artist-art' : 'artist-art'}
-                  />
-                  <p>Chargement...</p>
+            ) : (
+              <li key={index} className={isMobile ? 'm-main-djsets-mp' : 'main-djsets-mp'}>
+                <div className="link" style={{ cursor: 'default' }}>
+                  <div className={isMobile ? 'm-artist-comp-mp' : 'artist-comp-mp'}>
+                    <img
+                      src={TNTRQRCODE}
+                      className={isMobile ? 'm-artist-art' : 'artist-art'}
+                      alt="Loading"
+                    />
+                    <p>Chargement...</p>
+                  </div>
                 </div>
-              </div>
-            </li>
-          )}
+              </li>
+            )
+          ))}
         </ul>
       </div>
     </div>

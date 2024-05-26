@@ -6,7 +6,7 @@ import TNTRQRCODE from './TNTRQRCODE.png';
 const PodcastItem = ({ podcast, isMobile, handlePlayClick }) => {
   const latestEpisode = podcast.episodes.length > 0 ? podcast.episodes[0] : null;
   const urlEncodedTitle = encodeURIComponent(podcast.title.replace(/\s+/g, '_'));
-  const imageDataUrl = podcast.podcastImageUrl;
+  const imageDataUrl = podcast.podcastImageBase64 || TNTRQRCODE;
 
   return (
     <li className={isMobile ? 'm-main-djsets-mp' : 'main-djsets-mp'}>
@@ -15,8 +15,9 @@ const PodcastItem = ({ podcast, isMobile, handlePlayClick }) => {
           <h2>{podcast.title || 'ARTIST'}</h2>
           <div className={isMobile ? 'm-artist-comp-content-mp' : 'artist-comp-content-mp'} style={{ fontSize: '0.95em' }}>
             <img
-              src={imageDataUrl || TNTRQRCODE}
+              src={imageDataUrl}
               className={isMobile ? 'm-artist-art' : 'artist-art'}
+              alt="Podcast"
             />
             {latestEpisode && (
               <>
@@ -61,7 +62,12 @@ const LastDJadd = ({ isMobile }) => {
       });
       if (response.ok) {
         const blob = await response.blob();
-        return URL.createObjectURL(blob);
+        const reader = new FileReader();
+        return new Promise((resolve, reject) => {
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
       } else {
         throw new Error('Failed to fetch image');
       }
@@ -88,63 +94,60 @@ const LastDJadd = ({ isMobile }) => {
     return cachedPodcasts;
   };
 
-  const fetchPodcastsAndEpisodes = async () => {
-    try {
-      const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcasts`, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-        },
-      });
+const fetchPodcastsAndEpisodes = async () => {
+  try {
+    const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcasts`, {
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
-
-      const podcasts = await response.json();
-
-      const podcastPromises = podcasts.map(async (podcast) => {
-        const episodes = await fetchEpisodes(podcast.id);
-        const episodesWithImages = await Promise.all(
-          episodes.map(async (episode) => {
-            const imageUrl = await fetchImageData(episode.art);
-            return { ...episode, podcast, imageUrl };
-          })
-        );
-        const earliestCreatedAt = episodesWithImages.length > 0
-          ? Math.min(...episodesWithImages.map(e => new Date(e.created_at).getTime()))
-          : null;
-
-        const podcastImageUrl = podcast.art ? await fetchImageData(podcast.art) : 'https://via.placeholder.com/100';
-
-        return { ...podcast, episodes: episodesWithImages, earliestCreatedAt, podcastImageUrl };
-      });
-
-      const podcastsWithEpisodes = await Promise.all(podcastPromises);
-
-      const podcastsSortedByEarliestEpisode = podcastsWithEpisodes
-        .filter(podcast => podcast.earliestCreatedAt !== null)
-        .sort((a, b) => b.earliestCreatedAt - a.earliestCreatedAt);
-
-      const latestPodcasts = podcastsSortedByEarliestEpisode.slice(0, 10);
-
-      // Save the latest podcasts to cache
-      saveToCache(latestPodcasts);
-
-      // Set the state with the latest podcasts
-      setRecentPodcasts(latestPodcasts);
-    } catch (error) {
-      setError(error);
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
     }
-  };
+
+    const podcasts = await response.json();
+
+    const podcastPromises = podcasts.map(async (podcast) => {
+      const episodes = await fetchEpisodes(podcast.id);
+      // Find the smallest value of episode.created_at
+      const smallestCreatedAt = episodes.reduce((minCreatedAt, episode) => {
+        const createdAt = new Date(episode.created_at).getTime();
+        return createdAt < minCreatedAt ? createdAt : minCreatedAt;
+      }, Infinity);
+      return { ...podcast, episodes, smallestCreatedAt };
+    });
+
+    const podcastsWithEpisodes = await Promise.all(podcastPromises);
+
+    const sortedPodcasts = podcastsWithEpisodes
+      .filter(podcast => podcast.is_published)
+      .sort((a, b) => b.smallestCreatedAt - a.smallestCreatedAt);
+
+    const latestPodcasts = sortedPodcasts.slice(0, 10);
+
+    const latestPodcastsWithImages = await Promise.all(
+      latestPodcasts.map(async (podcast) => {
+        const podcastImageBase64 = podcast.art ? await fetchImageData(podcast.art) : TNTRQRCODE;
+        return { ...podcast, podcastImageBase64 };
+      })
+    );
+
+    saveToCache(latestPodcastsWithImages);
+
+    setRecentPodcasts(latestPodcastsWithImages);
+  } catch (error) {
+    setError(error);
+  }
+};
+
 
   useEffect(() => {
-    // Load data from cache on component mount
     const cachedPodcasts = loadFromCache();
     if (cachedPodcasts.length > 0) {
       setRecentPodcasts(cachedPodcasts);
     }
 
-    // Fetch data in the background and update cache and state if necessary
     fetchPodcastsAndEpisodes();
   }, []);
 
@@ -179,6 +182,7 @@ const LastDJadd = ({ isMobile }) => {
                   <img
                     src={TNTRQRCODE}
                     className={isMobile ? 'm-artist-art' : 'artist-art'}
+                    alt="Loading"
                   />
                   <p>Chargement...</p>
                 </div>

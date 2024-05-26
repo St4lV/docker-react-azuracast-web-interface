@@ -9,7 +9,7 @@ const Podcast = ({ podcast, isMobile }) => {
   const urlEncodedTitle = encodeURIComponent(podcast.title.replace(/\s+/g, '_'));
 
   useEffect(() => {
-    if (podcast.is_enabled && podcast.art) {
+    if (podcast.is_enabled && podcast.is_published && podcast.art) {
       const fetchImageData = async (imageUrl) => {
         try {
           const response = await fetch(imageUrl, {
@@ -30,9 +30,9 @@ const Podcast = ({ podcast, isMobile }) => {
       };
       fetchImageData(podcast.art);
     }
-  }, [podcast.is_enabled, podcast.art]);
+  }, [podcast.is_enabled, podcast.is_published, podcast.art]);
 
-  if (!podcast.is_enabled) {
+  if (!podcast.is_enabled,!podcast.is_published) {
     return null;
   }
 

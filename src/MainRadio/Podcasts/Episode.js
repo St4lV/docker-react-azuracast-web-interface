@@ -3,7 +3,7 @@ import AudioPlayerContext from '../AudioPlayerContext';
 import TNTRQRCODE from '../TNTRQRCODE.png';
 
 const Episode = ({ episodeId, podcastId, episodeData, isMobile }) => {
-  const [episode, setEpisode] = useState(episodeData || null);
+  const [episode, setEpisode] = useState(episodeData && episodeData.is_published ? episodeData : null);
   const [imageDataUrl, setImageDataUrl] = useState(null);
   const [error, setError] = useState(null);
   const { play, pause, setRadioPlaying } = useContext(AudioPlayerContext);
@@ -11,9 +11,11 @@ const Episode = ({ episodeId, podcastId, episodeData, isMobile }) => {
   useEffect(() => {
     const fetchEpisodeData = async () => {
       if (episodeData) {
-        setEpisode(episodeData);
-        if (episodeData.art) {
-          fetchImageData(episodeData.art);
+        if (episodeData.is_published) {
+          setEpisode(episodeData);
+          if (episodeData.art) {
+            fetchImageData(episodeData.art);
+          }
         }
         return;
       }
@@ -28,9 +30,13 @@ const Episode = ({ episodeId, podcastId, episodeData, isMobile }) => {
           throw new Error(`Network response was not ok: ${response.statusText}`);
         }
         const data = await response.json();
-        setEpisode(data);
-        if (data.art) {
-          fetchImageData(data.art);
+        if (data.is_published) {
+          setEpisode(data);
+          if (data.art) {
+            fetchImageData(data.art);
+          }
+        } else {
+          setError(new Error('Episode not published'));
         }
       } catch (error) {
         setError(error);
@@ -60,9 +66,11 @@ const Episode = ({ episodeId, podcastId, episodeData, isMobile }) => {
   }, [episodeId, podcastId, episodeData]);
 
   const handlePlayClick = () => {
-    pause();
-    play(`https://radio.tirnatek.fr/api/station/tntr/public/podcast/${podcastId}/episode/${episodeId}/download.mp3?refresh=0`, episode, podcastId);
-    setRadioPlaying(false);
+    if (episode) {
+      pause();
+      play(`https://radio.tirnatek.fr/api/station/tntr/public/podcast/${podcastId}/episode/${episodeId}/download.mp3?refresh=0`, episode, podcastId);
+      setRadioPlaying(false);
+    }
   };
 
   if (error) {
