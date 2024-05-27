@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 const Schedule = ({ isMobile }) => {
   const [scheduleData, setScheduleData] = useState([]);
   const [rows, setRows] = useState(8);
 
-  const fetchSchedule = async () => {
+  const fetchSchedule = useCallback(async () => {
     try {
       const response = await fetch(`https://radio.tirnatek.fr/api/station/tntr/schedule?now=now&rows=${rows}`);
       const gp = await response.json();
@@ -13,7 +13,7 @@ const Schedule = ({ isMobile }) => {
     } catch (error) {
       console.error('Error fetching schedule:', error);
     }
-  };
+  }, [rows]);
 
   useEffect(() => {
     fetchSchedule();
@@ -27,7 +27,7 @@ const Schedule = ({ isMobile }) => {
     const intervalId = setInterval(checkTimeAndFetch, 60 * 1000);
 
     return () => clearInterval(intervalId);
-  }, [rows]);
+  }, [fetchSchedule]);
 
   const handleToggleRows = () => {
     setRows((prevRows) => (prevRows === 8 ? 48 : 8));

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import AudioPlayerContext from './AudioPlayerContext';
 import TNTRQRCODE from './TNTRQRCODE.png';
@@ -94,53 +94,52 @@ const LastDJadd = ({ isMobile }) => {
     return cachedPodcasts;
   };
 
-const fetchPodcastsAndEpisodes = async () => {
-  try {
-    const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcasts`, {
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
-      },
-    });
+  const fetchPodcastsAndEpisodes = useCallback(async () => {
+    try {
+      const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcasts`, {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error(`Network response was not ok: ${response.statusText}`);
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+
+      const podcasts = await response.json();
+
+      const podcastPromises = podcasts.map(async (podcast) => {
+        const episodes = await fetchEpisodes(podcast.id);
+        // Find the smallest value of episode.created_at
+        const smallestCreatedAt = episodes.reduce((minCreatedAt, episode) => {
+          const createdAt = new Date(episode.created_at).getTime();
+          return createdAt < minCreatedAt ? createdAt : minCreatedAt;
+        }, Infinity);
+        return { ...podcast, episodes, smallestCreatedAt };
+      });
+
+      const podcastsWithEpisodes = await Promise.all(podcastPromises);
+
+      const sortedPodcasts = podcastsWithEpisodes
+        .filter(podcast => podcast.is_published)
+        .sort((a, b) => b.smallestCreatedAt - a.smallestCreatedAt);
+
+      const latestPodcasts = sortedPodcasts.slice(0, 10);
+
+      const latestPodcastsWithImages = await Promise.all(
+        latestPodcasts.map(async (podcast) => {
+          const podcastImageBase64 = podcast.art ? await fetchImageData(podcast.art) : TNTRQRCODE;
+          return { ...podcast, podcastImageBase64 };
+        })
+      );
+
+      saveToCache(latestPodcastsWithImages);
+
+      setRecentPodcasts(latestPodcastsWithImages);
+    } catch (error) {
+      setError(error);
     }
-
-    const podcasts = await response.json();
-
-    const podcastPromises = podcasts.map(async (podcast) => {
-      const episodes = await fetchEpisodes(podcast.id);
-      // Find the smallest value of episode.created_at
-      const smallestCreatedAt = episodes.reduce((minCreatedAt, episode) => {
-        const createdAt = new Date(episode.created_at).getTime();
-        return createdAt < minCreatedAt ? createdAt : minCreatedAt;
-      }, Infinity);
-      return { ...podcast, episodes, smallestCreatedAt };
-    });
-
-    const podcastsWithEpisodes = await Promise.all(podcastPromises);
-
-    const sortedPodcasts = podcastsWithEpisodes
-      .filter(podcast => podcast.is_published)
-      .sort((a, b) => b.smallestCreatedAt - a.smallestCreatedAt);
-
-    const latestPodcasts = sortedPodcasts.slice(0, 10);
-
-    const latestPodcastsWithImages = await Promise.all(
-      latestPodcasts.map(async (podcast) => {
-        const podcastImageBase64 = podcast.art ? await fetchImageData(podcast.art) : TNTRQRCODE;
-        return { ...podcast, podcastImageBase64 };
-      })
-    );
-
-    saveToCache(latestPodcastsWithImages);
-
-    setRecentPodcasts(latestPodcastsWithImages);
-  } catch (error) {
-    setError(error);
-  }
-};
-
+  }, []);
 
   useEffect(() => {
     const cachedPodcasts = loadFromCache();
@@ -149,7 +148,7 @@ const fetchPodcastsAndEpisodes = async () => {
     }
 
     fetchPodcastsAndEpisodes();
-  }, []);
+  }, [fetchPodcastsAndEpisodes]);
 
   const handlePlayClick = (episode, podcastId) => {
     pause();

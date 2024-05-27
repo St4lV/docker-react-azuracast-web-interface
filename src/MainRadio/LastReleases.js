@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import AudioPlayerContext from './AudioPlayerContext';
 import TNTRQRCODE from './TNTRQRCODE.png';
 
@@ -36,6 +36,7 @@ const EpisodeItem = ({ episode, podcast, isMobile, handlePlayClick }) => {
           <div className={isMobile ? 'm-artist-comp-content-mp' : 'artist-comp-content-mp'} style={{ fontSize: '0.95em' }}>
             <img
               src={imageDataUrl}
+              alt=''
               className={isMobile ? 'm-artist-art' : 'artist-art'}
               onError={(e) => { e.target.src = TNTRQRCODE; }}
             />
@@ -114,7 +115,7 @@ const LastReleases = ({ isMobile }) => {
     return cachedEpisodes;
   };
 
-  const fetchPodcastsAndEpisodes = async () => {
+  const fetchPodcastsAndEpisodes = useCallback(async () => {
     try {
       const response = await fetch(`https://radio.tirnatek.fr/api/station/1/podcasts`, {
         headers: {
@@ -149,7 +150,7 @@ const LastReleases = ({ isMobile }) => {
     } catch (error) {
       setError(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // Load data from cache on component mount
@@ -158,7 +159,7 @@ const LastReleases = ({ isMobile }) => {
 
     // Fetch data in the background and update cache and state if necessary
     fetchPodcastsAndEpisodes();
-  }, []);
+  }, [fetchPodcastsAndEpisodes]);
 
   const handlePlayClick = (episode, podcastId) => {
     pause();
