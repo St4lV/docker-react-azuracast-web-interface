@@ -32,7 +32,7 @@ const Podcast = ({ podcast, isMobile }) => {
     }
   }, [podcast.is_enabled, podcast.is_published, podcast.art]);
 
-  if (!podcast.is_enabled && !podcast.is_published) {
+  if (!podcast.is_enabled || !podcast.is_published) {
     return null;
   }
 

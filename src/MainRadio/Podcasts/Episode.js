@@ -36,7 +36,7 @@ const Episode = ({ episodeId, podcastId, episodeData, isMobile }) => {
             fetchImageData(data.art);
           }
         } else {
-          setError(new Error('Episode not published'));
+          return null;
         }
       } catch (error) {
         setError(error);
