@@ -32,7 +32,7 @@ const EpisodeItem = ({ episode, podcast, isMobile, handlePlayClick }) => {
     <li key={episode.id} className={isMobile ? 'm-main-djsets-mp' : 'main-djsets-mp'}>
       <div onClick={() => handlePlayClick(episode, podcast.id)} className="link" style={{ cursor: 'pointer' }}>
         <div className={isMobile ? 'm-artist-comp-mp' : 'artist-comp-mp'}>
-          <h2>{podcast.title || 'ARTIST'}</h2>
+          <h2>{episode.title || 'set'}</h2>
           <div className={isMobile ? 'm-artist-comp-content-mp' : 'artist-comp-content-mp'} style={{ fontSize: '0.95em' }}>
             <img
               src={imageDataUrl}
@@ -40,7 +40,7 @@ const EpisodeItem = ({ episode, podcast, isMobile, handlePlayClick }) => {
               className={isMobile ? 'm-artist-art' : 'artist-art'}
               onError={(e) => { e.target.src = TNTRQRCODE; }}
             />
-            <p>{episode.title}</p>
+            <p>{podcast.title}</p>
             <p>{formatDate(episode.publish_at)} - {formatTime(episode.media.length)}</p>
           </div>
         </div>

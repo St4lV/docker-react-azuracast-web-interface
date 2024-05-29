@@ -50,8 +50,10 @@ const Podcast = ({ podcast, isMobile }) => {
             alt={podcast.title || 'Podcast Art'}
             className={isMobile ? 'm-artist-art' : 'artist-art'}
           />
-          <p>{podcast.episodes || '0'} sets</p>
-          <p>Localisation: {podcast.language || 'No language specified'}</p>
+          <p>{podcast.episodes || '0'} sets - Loc: {podcast.language || 'No language specified'}</p>
+          <div className={isMobile ? 'm-dj-page-artist-desc':'dj-page-artist-desc'}>
+          <p>{podcast.description_short}</p>
+          </div>
         </div>
       </div>
     </Link>
