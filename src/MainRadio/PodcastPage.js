@@ -183,7 +183,7 @@ const PodcastPage = ({ isMobile }) => {
           <p className={isMobile ? 'm-artist-desc-page-text' : ''}>
             {podcastData.description || 'Non spécifié'}
           </p>
-          <div>
+          <div className={isMobile ? 'm-artist-page-icons-comp' : 'artist-page-icons-comp'}>
             <p>
               <FontAwesomeIcon
                 icon={faShareFromSquare}

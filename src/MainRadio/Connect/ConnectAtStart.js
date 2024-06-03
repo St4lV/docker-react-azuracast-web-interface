@@ -1,15 +1,27 @@
-import React, { useEffect, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
 
 function ConnectAtStart() {
   const { setIsAuthenticated } = useContext(AuthContext);
+  const [email, setEmail] = useState(localStorage.getItem('email'));
+  const [token, setToken] = useState(localStorage.getItem('token'));
+
+  useEffect(() => {
+    const handleLocalStorageUpdate = () => {
+      setEmail(localStorage.getItem('email'));
+      setToken(localStorage.getItem('token'));
+    };
+
+    window.addEventListener('localStorageUpdated', handleLocalStorageUpdate);
+
+    return () => {
+      window.removeEventListener('localStorageUpdated', handleLocalStorageUpdate);
+    };
+  }, []);
 
   useEffect(() => {
     const checkTokenValidity = async () => {
-      const email = localStorage.getItem('email');
-      const token = localStorage.getItem('token');
-
       if (!email || !token) {
         setIsAuthenticated(false);
         return;
@@ -46,6 +58,8 @@ function ConnectAtStart() {
               localStorage.setItem('username', userData.username);
               localStorage.setItem('description', userData.description);
               localStorage.setItem('podcast_id', userData.podcast_id);
+              const event = new Event('localStorageUpdated');
+              window.dispatchEvent(event);
             } else {
               console.error('Failed to fetch user data:', userDataResponse.statusText);
             }
@@ -63,7 +77,7 @@ function ConnectAtStart() {
     };
 
     checkTokenValidity();
-  }, [setIsAuthenticated]);
+  }, [email, token, setIsAuthenticated]);
 
   return null;
 }

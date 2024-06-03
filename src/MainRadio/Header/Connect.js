@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../Connect/AuthContext';
-//import ConnectAtStart from '../Connect/ConnectAtStart';
+import ConnectAtStart from '../Connect/ConnectAtStart';
 import axios from 'axios';
 
-function Connect({ isMobile}) {
+function Connect({ isMobile }) {
     const { setIsAuthenticated } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [uuid, setUuid] = useState("");
@@ -82,11 +82,15 @@ function Connect({ isMobile}) {
                 if (token) {
                     localStorage.setItem('token', token);
                     localStorage.setItem('email', email);
+
+                    // Dispatch custom event after setting localStorage
+                    const event = new Event('localStorageUpdated');
+                    window.dispatchEvent(event);
+
                     setIsAuthenticated(true);
                     setError("");
                     console.log('Login successful, token saved.');
-                    //ConnectAtStart();
-
+                    ConnectAtStart();
                 } else {
                     setError("Token not found in the response.");
                     console.error('Token not found in the response.');

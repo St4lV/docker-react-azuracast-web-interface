@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
 const EditProfil = () => {
-  const [username, setUsername] = useState(localStorage.getItem('username') || '');
-  const [email, setEmail] = useState(localStorage.getItem('email') || '');
-  const [description, setDescription] = useState(localStorage.getItem('description') || '');
-  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [username, setUsername] = useState(localStorage.getItem('username'));
+  const [email, setEmail] = useState(localStorage.getItem('email'));
+  const [description, setDescription] = useState(localStorage.getItem('description'));
+  const [token, setToken] = useState(localStorage.getItem('token'));
   const [responseMessage, setResponseMessage] = useState('');
-  const precedentEmail = localStorage.getItem('email') || '';
+  const precedentEmail = localStorage.getItem('email');
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();

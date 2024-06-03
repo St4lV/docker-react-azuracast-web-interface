@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './Header';
 import AudioPlayer from './AudioPlayer';
 import Schedule from './Schedule';
@@ -12,7 +12,7 @@ import { AudioPlayerProvider } from './AudioPlayerContext';
 import EditProfilComp from './Uploads/EditProfilComp';
 import UserConnectComp from './Header/UserConnectComp';
 import ConnectAtStart from './Connect/ConnectAtStart';
-import { AuthProvider } from './Connect/AuthContext';
+import { AuthProvider, AuthContext } from './Connect/AuthContext';
 import ProfilPage from './Profils/ProfilPage';
 
 const UserAgent = () => {
@@ -23,7 +23,8 @@ const UserAgent = () => {
     setIsMobile(/Mobile/i.test(userAgent));
   }, []);
 
-  const user = localStorage.getItem('username')
+  const user = localStorage.getItem('username');
+
   return (
     <AudioPlayerProvider isMobile={isMobile}>
       <AuthProvider>
@@ -42,51 +43,60 @@ const UserAgent = () => {
                     <Schedule isMobile={isMobile} />
                     <LastReleases isMobile={isMobile} />
                     <LastDJadd isMobile={isMobile} />
-                    <Endpage isMobile={isMobile} />
                   </div>
                 </div>
               }
             />
             <Route
               path="/sets"
-              element={<>
-                <PodcastMain isMobile={isMobile} />
-                <Endpage isMobile={isMobile} />
+              element={
+                <>
+                  <PodcastMain isMobile={isMobile} />
                 </>
-                }
+              }
             />
             <Route
               path="/sets/:urlEncodedTitle"
-              element={<>
-                <PodcastPage isMobile={isMobile} />
-                <Endpage isMobile={isMobile} />
-                </>
-                }
-            />
-          <Route
-              path={`/profil/${user}/éditer`}
-              element={<>
-              <EditProfilComp isMobile={isMobile} />
-              <Endpage isMobile={isMobile} />
-              </>
-              }
-            />
-          <Route
-              path={`/profil/${user}`}
               element={
                 <>
-              <ProfilPage isMobile={isMobile} />
-              <Endpage isMobile={isMobile} />
-              </>
+                  <PodcastPage isMobile={isMobile} />
+                </>
+              }
+            />
+            <Route
+              path="/profil/:user?/éditer"
+              element={<ProtectedRoute isMobile={isMobile} component={EditProfilComp} />}
+            />
+            <Route
+              path="/profil/:user?"
+              element={
+                <>
+                  <ProfilPage isMobile={isMobile} />
+                </>
               }
             />
           </Routes>
+          <Endpage isMobile={isMobile} />
           <div className={isMobile ? 'footer-mobile' : 'footer'}>
             <AudioPlayer isMobile={isMobile} />
           </div>
         </Router>
       </AuthProvider>
     </AudioPlayerProvider>
+  );
+};
+
+const ProtectedRoute = ({ component: Component, isMobile }) => {
+  const { isAuthenticated } = useContext(AuthContext);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" />;
+  }
+
+  return (
+    <>
+      <Component isMobile={isMobile} />
+    </>
   );
 };
 

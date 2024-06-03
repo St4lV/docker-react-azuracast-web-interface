@@ -24,12 +24,9 @@ function UserCompMenu({ isMobile, toggleUserComp }) {
 
     return (
         <div>
-            <span>Bonjour<br/>{user}</span>
+            <h3>Bonjour<br/><span className='user-menu-username'>{user}</span></h3>
             <Link to={`/profil/${user}`} className={'link'} onClick={handleCloseComp}>
                 <h3>Profil</h3>
-            </Link>
-            <Link to={`/profil/${user}/éditer`} className={'link'} onClick={handleCloseComp}>
-                <h3>Éditer</h3>
             </Link>
             <div onClick={handleDisconnect}>
                 <h3>Se déconnecter</h3>

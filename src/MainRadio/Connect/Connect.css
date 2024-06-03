@@ -33,7 +33,7 @@
     height: 100%;
   }
   .connect-img{
-    margin: 20px;
+    margin-top: 20px;
     border-radius: 50%;
     width: 140px;
     height: auto;
@@ -74,4 +74,7 @@
     left:300px;
     max-height: 200px;
     top:200px;
+  }
+  .user-menu-username{
+    font-size: 0.8em;
   }
