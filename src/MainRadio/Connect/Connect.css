@@ -1,0 +1,77 @@
+.main-user-comp {
+    position: fixed;
+    left: 0px;
+    top: 150px;
+    opacity: 0;
+    visibility: hidden;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, height 0.7s ease-in-out;
+    height: 0%;
+    background-image: linear-gradient(to right, #0000009f, #000000f1);
+  }
+  
+  .main-user-comp.open {
+    opacity: 1;
+    visibility: visible;
+    height: 100%;
+  }
+  .main-user-comp-mobile {
+    position: fixed;
+    left: 0px;
+    top: 100px;
+    opacity: 0;
+    visibility: hidden;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, height 0.5s ease-in-out;
+    height: 0%;
+    background-image: linear-gradient(to left, #0000009f, #000000f1);
+  }
+  
+  .main-user-comp-mobile.open {
+    opacity: 1;
+    visibility: visible;
+    height: 100%;
+  }
+  .connect-img{
+    margin: 20px;
+    border-radius: 50%;
+    width: 140px;
+    height: auto;
+  }
+  .m-connect-img{
+    margin: 2%;
+    border-radius: 50%;
+    width: 100px;
+    height: auto;
+  }
+  .edit-profil-comp{
+    margin-top: 150px;
+  background-color: #000000;
+   font-size: 1.5em;
+  }
+  .upload-comp{
+  background-color: #00bcd4;
+  }
+  .connectbackwhenloading{
+    display: none;
+  }
+  .edit-choice{
+    position: absolute;
+    top: 160px;
+  }
+  .profil-testtttt{
+    padding: 15px;
+    margin-top:200px;
+    background-color: #0000009f;
+    border-radius: 5%;
+  }
+  #profile-cover{
+    width: 250px;
+    height: auto;
+  }
+  .profile-user-infos{
+    position: absolute;
+    left:300px;
+    max-height: 200px;
+    top:200px;
+  }

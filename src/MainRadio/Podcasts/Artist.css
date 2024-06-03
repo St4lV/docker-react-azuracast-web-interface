@@ -215,12 +215,17 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  top: 500px;
   left:20px;
   margin-bottom: 50px;
   width: 93%;
   background-color: #0000005d;
   border-radius: 5%;
+}
+.episodes-list{
+  margin-top: 500px;
+}
+.m-episodes-list{
+  margin-top: 350px;
 }
 .m-episode-art{
   position: absolute;

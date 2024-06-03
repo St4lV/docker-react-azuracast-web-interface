@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faBars, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faGear} from '@fortawesome/free-solid-svg-icons';
+
+import UserConnectComp from './UserConnectComp';
 
 import VolumeControl from './VolumeControl';
 import AudioButtons from './AudioButtons';
@@ -33,6 +35,7 @@ function SocialIcons({ isMobile }) {
           <FontAwesomeIcon icon={faGear} />
         </div>
       </div>
+          <UserConnectComp isMobile={isMobile}/>
       <div className={`${isDropdownOpen ? (isMobile ? 'social-icons-mobile open' : 'social-icons open') : (isMobile ? 'social-icons-mobile' : 'social-icons')}`}>
         <div className="dropdown-content">
           <div className={`gear-menu ${isDropdownOpen ? 'visible' : ''}`}>

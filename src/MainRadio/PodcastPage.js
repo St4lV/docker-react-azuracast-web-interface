@@ -199,7 +199,7 @@ const PodcastPage = ({ isMobile }) => {
       {copied && <div style={isMobile ? { display: 'none' } : { position: 'fixed', bottom: '160px', fontSize: '0.8em', color: 'green', textAlign: 'center'}}>
         Link copied to clipboard!
       </div>}
-      <div className="episodes-list">
+      <div className={isMobile ? 'm-episodes-list' : 'episodes-list'}>
         {episodes.map((episode) => (
           <Episode key={episode.id} episodeId={episode.id} podcastId={podcastData.id} isMobile={isMobile} />
         ))}
