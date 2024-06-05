@@ -43,6 +43,7 @@ const UserAgent = () => {
                     <Schedule isMobile={isMobile} />
                     <LastReleases isMobile={isMobile} />
                     <LastDJadd isMobile={isMobile} />
+                    <Endpage isMobile={isMobile} />
                   </div>
                 </div>
               }
@@ -52,6 +53,9 @@ const UserAgent = () => {
               element={
                 <>
                   <PodcastMain isMobile={isMobile} />
+                  <div className={isMobile ? 'm-endpage-fix' : 'endpage-fix'}>
+                    <Endpage isMobile={isMobile} />
+                  </div>
                 </>
               }
             />
@@ -60,23 +64,35 @@ const UserAgent = () => {
               element={
                 <>
                   <PodcastPage isMobile={isMobile} />
+                  <div className={isMobile ? 'm-endpage-fix' : 'endpage-fix'}>
+                    <Endpage isMobile={isMobile} />
+                  </div>
                 </>
               }
             />
             <Route
               path="/profil/:user?/éditer"
-              element={<ProtectedRoute isMobile={isMobile} component={EditProfilComp} />}
+              element={
+            <>
+              <ProtectedRoute isMobile={isMobile} component={EditProfilComp} />
+                <div className={isMobile ? 'm-endpage-fix' : 'endpage-fix'}>
+                  <Endpage isMobile={isMobile} />
+                </div>
+            </>
+            }
             />
             <Route
               path="/profil/:user?"
               element={
                 <>
                   <ProfilPage isMobile={isMobile} />
+                  <div className={isMobile ? 'm-endpage-fix' : 'endpage-fix'}>
+                    <Endpage isMobile={isMobile} />
+                  </div>
                 </>
               }
             />
           </Routes>
-          <Endpage isMobile={isMobile} />
           <div className={isMobile ? 'footer-mobile' : 'footer'}>
             <AudioPlayer isMobile={isMobile} />
           </div>

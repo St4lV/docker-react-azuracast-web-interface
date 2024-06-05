@@ -73,6 +73,12 @@ const Episode = ({ episodeId, podcastId, episodeData, isMobile }) => {
     }
   };
 
+  const renderDescription = (description) => {
+    return description.split('\n').map((line, index) => (
+      <p key={index}>{line}</p>
+    ));
+  };
+
   if (error) {
     return <div>Recharger la page : {error.message}</div>;
   }
@@ -113,10 +119,9 @@ const Episode = ({ episodeId, podcastId, episodeData, isMobile }) => {
         className={isMobile ? 'm-episode-art' : 'episode-art'}
         onError={(e) => { e.target.src = TNTRQRCODE }}
       />
-      <p></p>
       <div className={isMobile ? 'm-episode-desc' : 'episode-desc'}>
         <p>{formatDate(episode.publish_at)} - {formatTime(episode.media.length)}</p>
-        <p>{episode.description || 'No description available'}</p>
+        <div>{renderDescription(episode.description || 'No description available')}</div>
       </div>
     </div>
   );

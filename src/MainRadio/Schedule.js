@@ -54,9 +54,9 @@ const Schedule = ({ isMobile }) => {
   const formattedScheduleData = formatScheduleData(scheduleData);
 
   return (
-    <div onClick={handleToggleRows} className={'table-bbg'}>
-      <table className={'scheduleTable'}>
-        <caption className='table-bbg-1'>
+    <div className={isMobile?('m-table-bbg'):('table-bbg')}>
+      <table onClick={handleToggleRows} className={isMobile?('m-scheduleTable'):('scheduleTable')}>
+        <caption className={isMobile?('m-table-bbg-1'):('table-bbg-1')}>
           <h2>Planning de diffusion</h2>
           <h4>(Effectif jusqu'au lendemain, minuit.)</h4>
         </caption>

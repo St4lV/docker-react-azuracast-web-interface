@@ -149,11 +149,19 @@ const PodcastPage = ({ isMobile }) => {
         icon = faLink;
       }
       return (
-        <a href={link} target="_blank" rel="noopener noreferrer" className='link' key={link}>
+        <a href={link} target="_blank" rel="noopener noreferrer" className='link-icons' key={link}>
           <FontAwesomeIcon icon={icon} className={isMobile ? 'm-artist-page-icons' : 'artist-page-icons'} />
         </a>
       );
     });
+  };
+
+  const renderDescription = (description) => {
+    return description.split('\n').map((line, index) => (
+      <p key={index}>
+        {line}
+      </p>
+    ));
   };
 
   if (loading) {
@@ -169,10 +177,7 @@ const PodcastPage = ({ isMobile }) => {
   }
 
   return (
-    <>
-      <h1 className={isMobile ? 'm-artist-comp-page' : 'artist-comp-page'}>
-        {podcastData.author || 'Artist not found'}
-      </h1>
+    <>         
       <div className={isMobile ? 'm-artist-comp-content-page' : 'artist-comp-content-page'}>
         <img
           src={imageDataUrl || TNTRQRCODE}
@@ -180,21 +185,15 @@ const PodcastPage = ({ isMobile }) => {
         />
         <div className={isMobile ? 'm-artist-desc-page' : 'artist-desc-page'}>
           <h2>Description:</h2>
-          <p className={isMobile ? 'm-artist-desc-page-text' : ''}>
-            {podcastData.description || 'Non spécifié'}
-          </p>
-          <div className={isMobile ? 'm-artist-page-icons-comp' : 'artist-page-icons-comp'}>
-            <p>
-              <FontAwesomeIcon
-                icon={faShareFromSquare}
-                className={isMobile ? 'm-artist-page-icons' : 'artist-page-icons'}
-                onClick={() => copyToClipboard(podcastData.link)}
-                style={{ cursor: 'pointer' }}
-              />
-              {renderLinks(podcastData.branding_config.public_custom_html)}
-            </p>
+          <div className={isMobile ? 'm-artist-desc-page-text' : 'artist-desc-page-text'}>
+            {renderDescription(podcastData.description || 'Non spécifié')}
           </div>
         </div>
+      </div>
+      <div className={isMobile ? 'm-artist-page-icons-comp' : 'artist-page-icons-comp'}>
+            <span className={isMobile ? 'm-artist-page-icons' : 'artist-page-icons'}>
+              {renderLinks(podcastData.branding_config.public_custom_html)}
+            </span>
       </div>
       {copied && <div style={isMobile ? { display: 'none' } : { position: 'fixed', bottom: '160px', fontSize: '0.8em', color: 'green', textAlign: 'center'}}>
         Link copied to clipboard!
@@ -202,8 +201,17 @@ const PodcastPage = ({ isMobile }) => {
       <div className={isMobile ? 'm-episodes-list' : 'episodes-list'}>
         {episodes.map((episode) => (
           <Episode key={episode.id} episodeId={episode.id} podcastId={podcastData.id} isMobile={isMobile} />
-        ))}
+        ))}        
       </div>
+      <h1 className={isMobile ? 'm-artist-comp-page' : 'artist-comp-page'}>
+        {podcastData.author || 'Artist not found'}
+      </h1>        
+      <FontAwesomeIcon
+          icon={faShareFromSquare}
+          id={isMobile ? 'm-ap-share-icon' : 'ap-share-icon'}
+          onClick={() => copyToClipboard(podcastData.link)}
+          style={{ cursor: 'pointer' }}
+        />         
     </>
   );
 };

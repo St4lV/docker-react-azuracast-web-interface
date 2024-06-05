@@ -49,12 +49,13 @@
   overflow: hidden;
   text-overflow: inherit;
   width: 155px;
+  height: 270px;
 }
 .m-artist-comp-mp{
-  border: 5px solid rgb(255, 255, 255);
+  border: 2px solid rgb(255, 255, 255);
   background-color: #000000;
   margin: 5px;
-  padding: 5px;
+  padding: 10px;
   text-align: left;
   display: grid;
   grid-template-rows: auto auto;
@@ -66,6 +67,7 @@
   overflow: hidden;
   text-overflow: inherit;
   width: 90px;
+  height: 155px;
 }
 .artist-comp-content {
   font-size: 15px;
@@ -116,12 +118,11 @@
     height: 90px;
 }
 .artist-comp-page {
-  position: absolute;
-  top: 140px;
+  position: fixed;
+  top: 125px;
   background-color: #0000009f;
-  width: 97%;
+  width: 98%;
   height: auto;
-  margin: 5px;
   padding: 10px;
   justify-content: center;
   align-items: center;
@@ -129,18 +130,18 @@
   
 }
 .m-artist-comp-page{
-  position: absolute;
+  position: fixed;
   top: 75px;
   margin-bottom: 40px;
+  padding-top: 50px;
   margin-top: 25px;
   background-color: #0000009f;
-  width: 94%;
+  width: 95%;
   height: auto;
   padding: 10px;
   font-size: 1.4em;
 }
 .artist-comp-content-page {
-  background-color: #38227441;
   font-size: 15px;
   display: flex; 
   align-items: left;
@@ -149,7 +150,6 @@
   margin-bottom: 50px;
 }
 .m-artist-comp-content-page{
-  background-color: #38227441;
   width: 100%;
   font-size: 0.7em;
   align-items: left;
@@ -169,8 +169,22 @@
   margin-left: 120px;
   margin-bottom: 20px;
 }
+.artist-desc-page-text{
+  max-height: 150px;
+  
+  overflow-x: hidden; 
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
 .m-artist-desc-page-text{
- max-height: 100px;
+  max-height: 100px;
+  margin-left: 5%;
+  max-width: 85%;
   overflow-x: hidden; 
   overflow-y: scroll;
 }
@@ -206,13 +220,13 @@
   display: flex;
   flex-direction: column;
   left:20px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   width: 93%;
   background-color: #0000005d;
   border-radius: 5%;
 }
 .episodes-list{
-  margin-top: 500px;
+  margin-top: 490px;
 }
 .m-episodes-list{
   margin-top: 350px;
@@ -246,17 +260,23 @@
   left: 255px;
   position: relative;
   max-width: 65%;
-  top:-50px;
+  top:-20px;
   overflow-x: hidden; 
   overflow-y: scroll;
   font-size: 0.9em;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 .m-episode-desc{
-  height: 90px;
+  height: 110px;
   left: 120px;
   position: relative;
   max-width: 60%;
-  top:-40px;
+  top: 0px;
   font-size: 0.6em;
   overflow-x: hidden; 
   overflow-y: scroll;
@@ -278,16 +298,60 @@
   left:175px;
   top:110px;
 }
-.artist-page-icons{
-  font-size: 2em;
-  margin-right: 15px;
-}
-.m-artist-page-icons-comp{
+.artist-page-icons-comp{
+  background-color: #00000049;
   position: absolute;
-  top: 150px;
-  left:-100px
+  top: 444px;
+  padding-left: 260px;
+  width: 67.6%;
+  max-height: 38px;
+  font-size: 2em;
+  overflow-y: hidden; 
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+.artist-page-icons{
+  margin-right: 15px;
+  padding: 1px;
+}
+.m-artist-page-icons-comp {
+  background-color: #00000049;
+  position: absolute;
+  top: 305px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  font-size: 1.41em;
+  width: 100%;
+  max-height: 33px;
+  display: inline-flex;
+  border-radius: 2%;
 }
 .m-artist-page-icons{
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left:15px;
+}
+#ap-share-icon{
+  position: fixed;
+  top:158px;
+  right: 60px;
   font-size: 2em;
-  margin-right: 15px;
+}
+#m-ap-share-icon{
+  margin-right: 10px;
+  margin-left: 5px;
+  position: fixed;
+  top:112px;
+  right: 35px;
+  font-size: 1.4em;
+}
+.link-icons {
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
 }
