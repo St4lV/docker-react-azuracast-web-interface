@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faBars, faGear} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faGear, faCompactDisc, faTowerCell} from '@fortawesome/free-solid-svg-icons';
 
 import UserConnectComp from './UserConnectComp';
 
@@ -75,12 +75,16 @@ function SocialIcons({ isMobile }) {
       </div>
       <div className={`${isMenuOpen ? (isMobile ? 'main-menu-mobile open' : 'main-menu open') : (isMobile ? 'main-menu-mobile' : 'main-menu')}`}>
         <div className={`menu-container ${isMenuOpen ? 'visible' : ''}`}>
-          <Link to={`/` }className="link"onClick={toggleMenu}>
-            <h1>La Radio</h1>
-          </Link>
-          <Link to={`/sets` }className="link"onClick={toggleMenu}>
-            <h1>DJ Sets</h1>
-          </Link>
+          <h2>
+            <Link to={`/` }className="link"onClick={toggleMenu}>
+              <FontAwesomeIcon icon={faTowerCell} /> Diffusion en direct
+            </Link>
+          </h2>
+          <h2>
+            <Link to={`/sets` }className="link"onClick={toggleMenu}>
+              <FontAwesomeIcon icon={faCompactDisc} /> Live & DJ sets
+            </Link>
+          </h2>
         </div>
       </div>
     </div>

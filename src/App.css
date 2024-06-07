@@ -105,7 +105,7 @@ body::-webkit-scrollbar {
 .main-menu.open {
   opacity: 1;
   visibility: visible;
-  width: 30%;
+  width: 24%;
 }
 .main-menu-mobile {
   position: fixed;
@@ -122,7 +122,7 @@ body::-webkit-scrollbar {
 .main-menu-mobile.open {
   opacity: 1;
   visibility: visible;
-  width: 70%;
+  width: 50%;
 }
 
 .dropdown-content {
