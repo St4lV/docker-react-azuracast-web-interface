@@ -1,9 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../Connect/AuthContext';
 
 function UserCompMenu({ isMobile, toggleUserComp }) {
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+    const [user, setUser] = useState(localStorage.getItem('username'));
+
+    useEffect(() => {
+        const handleStorageUpdate = () => {
+            setUser(localStorage.getItem('username'));
+        };
+
+        window.addEventListener('localStorageUpdated', handleStorageUpdate);
+
+        return () => {
+            window.removeEventListener('localStorageUpdated', handleStorageUpdate);
+        };
+    }, []);
 
     const handleDisconnect = () => {
         setIsAuthenticated(false);
@@ -11,9 +24,9 @@ function UserCompMenu({ isMobile, toggleUserComp }) {
         localStorage.removeItem('email');
         localStorage.removeItem('token');
         localStorage.removeItem('username');
-        localStorage.removeItem('description')
+        localStorage.removeItem('description');
     };
-    const user = localStorage.getItem('username')
+
     const handleCloseComp = () => {
         toggleUserComp();
     };

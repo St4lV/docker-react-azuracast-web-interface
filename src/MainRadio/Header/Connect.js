@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../Connect/AuthContext';
-import ConnectAtStart from '../Connect/ConnectAtStart';
+import { connectAtStart } from '../Connect/ConnectAtStart';
 import axios from 'axios';
 
 function Connect({ isMobile }) {
@@ -82,15 +82,14 @@ function Connect({ isMobile }) {
                 if (token) {
                     localStorage.setItem('token', token);
                     localStorage.setItem('email', email);
-
-                    // Dispatch custom event after setting localStorage
                     const event = new Event('localStorageUpdated');
                     window.dispatchEvent(event);
 
                     setIsAuthenticated(true);
                     setError("");
                     console.log('Login successful, token saved.');
-                    ConnectAtStart();
+
+                    await connectAtStart(setIsAuthenticated); // Call the function here
                 } else {
                     setError("Token not found in the response.");
                     console.error('Token not found in the response.');
@@ -106,7 +105,8 @@ function Connect({ isMobile }) {
                     setError("An error occurred during login.");
                 }
             } else {
-                setError("An error occurred during login.");
+                console.error('Error message:', error.message);
+                setError("final Else Error message: " + error.message);
             }
         }
     };
@@ -128,12 +128,7 @@ function Connect({ isMobile }) {
             ) : (
                 <div>
                     <h2>Vérifiez votre code:</h2>
-                    <input
-                        type="text"
-                        value={uuid}
-                        onChange={(e) => setUuid(e.target.value)}
-                        placeholder="UUID"
-                    /><br/>
+                    <br/>
                     <input
                         type="text"
                         value={code}
