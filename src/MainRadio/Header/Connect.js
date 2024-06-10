@@ -89,7 +89,7 @@ function Connect({ isMobile }) {
                     setError("");
                     console.log('Login successful, token saved.');
 
-                    await connectAtStart(setIsAuthenticated); // Call the function here
+                    await connectAtStart(setIsAuthenticated);
                 } else {
                     setError("Token not found in the response.");
                     console.error('Token not found in the response.');
@@ -121,20 +121,19 @@ function Connect({ isMobile }) {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email"
-                    /><br/>
+                    /><br/><br/>
                     <button onClick={handleSendCode}>Envoyer le code</button>
                     <p>{error}</p>
                 </div>
             ) : (
                 <div>
                     <h2>Vérifiez votre code:</h2>
-                    <br/>
                     <input
                         type="text"
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
                         placeholder="Code"
-                    /><br/>
+                    /><br/><br/>
                     <button onClick={handleLogin}>Se connecter</button>
                     <div onClick={handleSendCode}>
                         <p>Renvoyer le code</p>

@@ -76,14 +76,18 @@ function SocialIcons({ isMobile }) {
       <div className={`${isMenuOpen ? (isMobile ? 'main-menu-mobile open' : 'main-menu open') : (isMobile ? 'main-menu-mobile' : 'main-menu')}`}>
         <div className={`menu-container ${isMenuOpen ? 'visible' : ''}`}>
           <h2>
+            <div className={isMobile ? 'm-main-menu-line' : 'main-menu-line'}>
             <Link to={`/` }className="link"onClick={toggleMenu}>
               <FontAwesomeIcon icon={faTowerCell} /> Diffusion en direct
             </Link>
+            </div>
           </h2>
           <h2>
+          <div className={isMobile ? 'm-main-menu-line' : 'main-menu-line'}>
             <Link to={`/sets` }className="link"onClick={toggleMenu}>
               <FontAwesomeIcon icon={faCompactDisc} /> Live & DJ sets
             </Link>
+            </div>
           </h2>
         </div>
       </div>
