@@ -135,7 +135,6 @@ const LastReleases = ({ isMobile }) => {
       const sortedEpisodes = allEpisodes.sort((a, b) => new Date(b.publish_at) - new Date(a.publish_at));
       const latestEpisodes = sortedEpisodes.slice(0, 10);
 
-      // Fetch images for the latest episodes
       const latestEpisodesWithImages = await Promise.all(
         latestEpisodes.map(async (episode) => {
           const imageDataUrl = episode.art ? await fetchImageData(episode.art) : TNTRQRCODE;
@@ -143,7 +142,6 @@ const LastReleases = ({ isMobile }) => {
         })
       );
 
-      // Save the latest episodes with images to cache
       saveToCache(latestEpisodesWithImages);
 
       setRecentEpisodes(latestEpisodesWithImages);
@@ -153,11 +151,9 @@ const LastReleases = ({ isMobile }) => {
   }, []);
 
   useEffect(() => {
-    // Load data from cache on component mount
     const cachedEpisodes = loadFromCache();
     setRecentEpisodes(cachedEpisodes);
 
-    // Fetch data in the background and update cache and state if necessary
     fetchPodcastsAndEpisodes();
   }, [fetchPodcastsAndEpisodes]);
 

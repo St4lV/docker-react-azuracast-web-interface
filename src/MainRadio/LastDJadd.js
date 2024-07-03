@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AudioPlayerContext from './AudioPlayerContext';
 import TNTRQRCODE from './TNTRQRCODE.png';
 
-const PodcastItem = ({ podcast, isMobile, handlePlayClick }) => {
+const PodcastItem = ({ podcast, isMobile}) => {
   const latestEpisode = podcast.episodes.length > 0 ? podcast.episodes[0] : null;
   const urlEncodedTitle = encodeURIComponent(podcast.title.replace(/\s+/g, '_'));
   const imageDataUrl = podcast.podcastImageBase64 || TNTRQRCODE;
@@ -32,7 +32,7 @@ const PodcastItem = ({ podcast, isMobile, handlePlayClick }) => {
 };
 
 const LastDJadd = ({ isMobile }) => {
-  const [recentPodcasts, setRecentPodcasts] = useState([]);
+  const [recentPodcasts, setRecentPodcasts] = useState(Array(10).fill(null));
   const [error, setError] = useState(null);
   const { play, pause, setRadioPlaying } = useContext(AudioPlayerContext);
 
@@ -50,6 +50,7 @@ const LastDJadd = ({ isMobile }) => {
       return data;
     } catch (error) {
       setError(error);
+      return [];
     }
   };
 
@@ -73,6 +74,7 @@ const LastDJadd = ({ isMobile }) => {
       }
     } catch (error) {
       setError(error);
+      return null;
     }
   };
 
@@ -89,6 +91,8 @@ const LastDJadd = ({ isMobile }) => {
       const cachedPodcast = localStorage.getItem(`podcast_${i}`);
       if (cachedPodcast) {
         cachedPodcasts.push(JSON.parse(cachedPodcast));
+      } else {
+        cachedPodcasts.push(null);
       }
     }
     return cachedPodcasts;
@@ -110,7 +114,6 @@ const LastDJadd = ({ isMobile }) => {
 
       const podcastPromises = podcasts.map(async (podcast) => {
         const episodes = await fetchEpisodes(podcast.id);
-        // Find the smallest value of episode.created_at
         const smallestCreatedAt = episodes.reduce((minCreatedAt, episode) => {
           const createdAt = new Date(episode.created_at).getTime();
           return createdAt < minCreatedAt ? createdAt : minCreatedAt;
@@ -143,9 +146,7 @@ const LastDJadd = ({ isMobile }) => {
 
   useEffect(() => {
     const cachedPodcasts = loadFromCache();
-    if (cachedPodcasts.length > 0) {
-      setRecentPodcasts(cachedPodcasts);
-    }
+    setRecentPodcasts(cachedPodcasts);
 
     fetchPodcastsAndEpisodes();
   }, [fetchPodcastsAndEpisodes]);
@@ -165,29 +166,29 @@ const LastDJadd = ({ isMobile }) => {
       <h2 style={{ textAlign: 'center', position: 'relative', top: '5px', fontSize: '1.8em' }}>Derniers DJs ajoutés:</h2>
       <div className={isMobile ? 'm-main-djsets-mp-container' : 'main-djsets-mp-container'}>
         <ul>
-          {recentPodcasts.length > 0 ? (
-            recentPodcasts.map((podcast) => (
+          {recentPodcasts.map((podcast, index) => (
+            podcast ? (
               <PodcastItem
                 key={podcast.id}
                 podcast={podcast}
                 isMobile={isMobile}
                 handlePlayClick={(episode) => handlePlayClick(episode, podcast.id)}
               />
-            ))
-          ) : (
-            <li className={isMobile ? 'm-main-djsets-mp' : 'main-djsets-mp'}>
-              <div className="link" style={{ cursor: 'default' }}>
-                <div className={isMobile ? 'm-artist-comp-mp' : 'artist-comp-mp'}>
-                  <img
-                    src={TNTRQRCODE}
-                    className={isMobile ? 'm-artist-art' : 'artist-art'}
-                    alt="Loading"
-                  />
-                  <p>Chargement...</p>
+            ) : (
+              <li key={index} className={isMobile ? 'm-main-djsets-mp' : 'main-djsets-mp'}>
+                <div className="link" style={{ cursor: 'default' }}>
+                  <div className={isMobile ? 'm-artist-comp-mp' : 'artist-comp-mp'}>
+                    <img
+                      src={TNTRQRCODE}
+                      className={isMobile ? 'm-artist-art' : 'artist-art'}
+                      alt="Loading"
+                    />
+                    <p>Chargement...</p>
+                  </div>
                 </div>
-              </div>
-            </li>
-          )}
+              </li>
+            )
+          ))}
         </ul>
       </div>
     </div>

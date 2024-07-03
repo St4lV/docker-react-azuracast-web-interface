@@ -84,7 +84,7 @@ const Episode = ({ episodeId, podcastId, episodeData, isMobile }) => {
   }
 
   if (!episode) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   const formatDate = (timestamp) => {
