@@ -2,6 +2,8 @@
 
 **This project is a *React* Web Interface running on *NodeJS* meant to use *Azuracast* instance services and API.**
 
+## Deprecated : New projet proiving a full proxy backend : [https://github.com/St4lV/tntr-next-js](https://github.com/St4lV/tntr-next-js)
+
 ---
 ## Progression:
  * [x] Display playlist, artist and name of actual playing song.
